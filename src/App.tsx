@@ -1,15 +1,16 @@
 import './App.scss'
-import Header from './components/Header/Header'
-import Footer from './components/Footer/Footer'
 import Home from './pages/Home/Home'
+import { Routes, Route, Navigate } from "react-router-dom";
+import SignIn from './pages/SignIn/SignIn';
 
 function App() {
 
   return (
     <div className='wrapper'>
-      <Header />
-      <Home />
-      <Footer />
+      <Routes>
+        <Route path="/" element={<SignIn />} />
+        <Route path="/home" element={<Home />} />
+      </Routes>
     </div>
     )
 }
