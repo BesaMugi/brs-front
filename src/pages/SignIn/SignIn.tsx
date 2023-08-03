@@ -1,6 +1,19 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import styles from "./SignIn.module.scss";
 
 function SignIn() {
+  const [login, setLogin] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const error = useSelector((state) => {
+    return state.application.error;
+  });
+
+  // createSlice - 3 cases
+    // handleSignIn / dispatch(auth({log, pass}))
+
   return (
     <div className={styles.form_auth_block}>
       <div className={styles.form_auth_block_content}>
