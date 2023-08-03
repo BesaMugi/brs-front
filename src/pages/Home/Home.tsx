@@ -1,8 +1,14 @@
+import Header from "../../components/Header/Header"
 import styles from "./Home.module.scss"
+import Footer from "../../components/Footer/Footer"
 
 function Home() {
   return (
-    <div className={styles.wrapper}>Home</div>
+    <>
+    <Header />
+    <div className={styles.wrapper}></div>
+    <Footer />
+    </>
   )
 }
 
