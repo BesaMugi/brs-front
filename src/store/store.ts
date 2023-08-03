@@ -1,8 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
+import lessons from "../reducer/lessonSlice"
 
 export const store = configureStore({
   reducer: {
-    user,
+    lessons
   },
 });
 
