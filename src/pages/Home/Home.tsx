@@ -1,6 +1,8 @@
+import styles from "./Home.module.scss"
+
 function Home() {
   return (
-    <div>Home</div>
+    <div className={styles.wrapper}>Home</div>
   )
 }
 
