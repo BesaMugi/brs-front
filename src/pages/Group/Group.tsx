@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  addLessonInGroup,
   createGroups,
   deleteGroups,
+  deleteLessonFromGroup,
   fetchGroups,
   updateGroupsInStore,
 } from "../../reducer/groupSlice";
 import { AppDispatch, RootState } from "store/store";
 import styles from "./Group.module.scss";
+import { Link } from "react-router-dom";
+import { Modal } from "antd";
+import { fetchLessons } from "../../reducer/lessonSlice";
 
 interface Group {
   _id: string;
@@ -18,12 +23,30 @@ interface Group {
 
 const Group = () => {
   const groups = useSelector((state: RootState) => state.groups.groups);
+  const lessons = useSelector((state: RootState) => state.lessons.lessons);
+  console.log(lessons);
 
   const dispatch = useDispatch<AppDispatch>();
 
   const [groupName, setGroupName] = useState<string>("");
   const [editingGroupId, setEditingGroupId] = useState<string | null>(null);
   const [editingGroupName, setEditingGroupName] = useState<string>("");
+  const [showModal, setShowModal] = useState<boolean>(false);
+
+  const handleOpenModal = () => {
+    setShowModal(true);
+  };
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const handleAddLessonToGroup = (groupId: string, lessonId: string) => {
+    dispatch(addLessonInGroup({ groupId, lessonId }));
+  };
+
+  const handleDeleteLessonFromGroup = (groupId: string, lessonId: string) => {
+    dispatch(deleteLessonFromGroup({ groupId, lessonId }));
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setGroupName(e.target.value);
@@ -57,7 +80,9 @@ const Group = () => {
 
   useEffect(() => {
     dispatch(fetchGroups());
+    dispatch(fetchLessons());
   }, []);
+
   return (
     <>
       <div className={styles.input_group}>
@@ -120,11 +145,50 @@ const Group = () => {
                 </div>
                 <div className={styles.main_lesson_user}>
                   <div>
-                    <button>Предметы</button>
+                    <button>
+                      {" "}
+                      <Link to={"/users"}>Студенты</Link>
+                    </button>
                   </div>
                   <div>
-                    <button>Студенты</button>
+                    <button onClick={handleOpenModal}>Предметы</button>
                   </div>
+                  {showModal && (
+                    <Modal
+                      title="Добавление предмета"
+                      open={true}
+                      onOk={handleCloseModal}
+                      onCancel={handleCloseModal}
+                      maskStyle={{ backgroundColor: " #00000020" }}
+                    >
+                      <div>
+                        {lessons.map((lesson) => {
+                          return (
+                            <div key={lesson._id}>
+                              {lesson.title}
+                              <button
+                                onClick={() =>
+                                  handleAddLessonToGroup(item._id, lesson._id)
+                                }
+                              >
+                                +
+                              </button>
+                              <button
+                                onClick={() =>
+                                  handleDeleteLessonFromGroup(
+                                    item._id,
+                                    lesson._id
+                                  )
+                                }
+                              >
+                                x
+                              </button>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </Modal>
+                  )}
                 </div>
               </div>
             </div>
