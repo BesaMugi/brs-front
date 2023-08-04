@@ -6,11 +6,13 @@ import { RootState, AppDispatch } from "store/store";
 interface User {
   id: number;
   login: string;
-  lastname: string;
-  surname: string;
-  group: string;
+  firstName: string;
+  lastName: string;
+  surName: string;
   role: string;
   password: string;
+  groups: string;
+  lessons: string;
 }
 
 const AllUsers: React.FC = () => {
@@ -36,7 +38,7 @@ const AllUsers: React.FC = () => {
       <h2>Пользователи</h2>
       <ul>
         {users.map((user) => (
-          <li key={user.id}>{user.login}</li>
+          <li key={user.id}>{user.firstName} {user.lastName} {user.surName}</li>
         ))}
       </ul>
     </div>
