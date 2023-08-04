@@ -31,6 +31,59 @@ export const fetchLessons = createAsyncThunk<
   }
 });
 
+export const addLessons = createAsyncThunk(
+  "add/Lesson",
+  async (lessonName, thunkAPI) => {
+    try {
+      const res = await fetch(`http://localhost:3000/lessons`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ title: lessonName }),
+      });
+
+      const lessons = await res.json();
+      return lessons;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const deleteLessons = createAsyncThunk(
+  "delete/Lesson",
+  async (id, thunkAPI) => {
+    try {
+      await fetch(`http://localhost:3000/lesson/${id}`, {
+        method: "DELETE",
+      });
+      return id;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const changeLessons = createAsyncThunk(
+  "change/Lesson",
+  async ({ lessonId, newLessonName }, thunkAPI) => {
+    try {
+      const res = await fetch(`http://localhost:3000/lesson/${lessonId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ title: newLessonName }),
+      });
+      const lessons = await res.json();
+      return lessons;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 const lessonSlice = createSlice({
   name: "lessons",
   initialState,
@@ -41,15 +94,33 @@ const lessonSlice = createSlice({
         state.loading = true;
       })
       .addCase(
-        fetchLessons.fulfilled,(state, action: PayloadAction<LessonsItem[]>) => {
+        fetchLessons.fulfilled,
+        (state, action: PayloadAction<LessonsItem[]>) => {
           state.lessons = action.payload;
-          console.log(action.payload);
-          
         }
       )
       .addCase(fetchLessons.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+
+      .addCase(addLessons.fulfilled, (state, action) => {
+        state.lessons.push(action.payload);
+      })
+      .addCase(deleteLessons.fulfilled, (state, action) => {
+        state.lessons = state.lessons.filter(
+          (item) => item._id !== action.payload
+        );
+      })
+
+      .addCase(changeLessons.fulfilled, (state, action) => {
+        console.log(action.payload._id);
+        state.lessons = state.lessons.map((item) => {
+          console.log(item);
+          // if(item._id === action.payload._id){
+          //   console.log('ccc');
+          // }
+        })
       });
   },
 });
