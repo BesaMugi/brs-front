@@ -9,6 +9,7 @@ function Header() {
           <ul className={styles.navbar_menu}>
             <li><a href="#">Главная</a></li>
             <li><a href="#">Предметы</a></li>
+            <li><a href="/groups">Группы</a></li>
             <li><a href="#">Образование</a></li>
             <li><a href="#">Контакты</a></li>
           </ul>

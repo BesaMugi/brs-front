@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./SignIn.module.scss";
-import { authSignIn } from "../../slices/authSlices";
-
+import { authSignIn } from "../../reducer/authSlices";
 
 function SignIn() {
   const [login, setLogin] = useState("");
@@ -58,12 +57,11 @@ function SignIn() {
             />
           </div>
           <div>
-          <button
-            className={styles.form_auth_button}
-            type="submit"
-          >
-            Войти
-          </button>
+            <button className={styles.form_auth_button} type="submit">
+              <Link to={'/home'} >
+              Войти 
+              </Link>
+            </button>
           </div>
         </form>
       </div>

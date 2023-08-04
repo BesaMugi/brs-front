@@ -26,7 +26,7 @@ export const authSignIn = createAsyncThunk(
         return thunkAPI.rejectWithValue(token.error);
       }
 
-      localStorage.setItem("token", token.token);
+      localStorage.setItem("token", token);
       return token;
     } catch (error) {
       console.error("Error occurred during sign-in:", error);

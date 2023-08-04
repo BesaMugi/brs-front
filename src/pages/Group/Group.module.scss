@@ -1,0 +1,86 @@
+// Group.module.scss
+
+.input_group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  input {
+    height: 30px;
+    padding: 5px;
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  .btn_add_group {
+    height: 30px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card {
+  width: 200px;
+  background-color: #f1f1f1;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .delete_group,
+  .btn_check_mark,
+  .btn_redaction_mark {
+    font-size: 18px;
+    cursor: pointer;
+
+    &:hover {
+      color: green;
+    }
+  }
+
+  .btn_check_mark {
+    margin-top: 5px;
+  }
+
+  .delete_group {
+    color: red;
+  }
+
+  .edit_input {
+    height: 20px;
+    padding: 5px;
+    margin: 0 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  .edit_name{
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .end_name{
+    margin: 7px;
+  }
+
+  .main_lesson_user{
+    display: flex;
+    justify-content: space-between;
+  }
+}
