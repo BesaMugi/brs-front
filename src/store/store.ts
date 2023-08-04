@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import lessons from "../reducer/lessonSlice"
+import groups from "../reducer/groupSlice"
 
 export const store = configureStore({
   reducer: {
-    lessons
+    lessons,
+    groups,
   },
 });
 
