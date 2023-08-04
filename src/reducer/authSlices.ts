@@ -1,14 +1,25 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+interface AuthState {
+  error: string | null;
+  loading: boolean | null;
+  token: string | null;
+  signIn: boolean;
+  showBar: boolean;
+}
 
-const initialState = {
+const initialState: AuthState = {
   error: null,
   loading: null,
   token: localStorage.getItem("token"),
   signIn: false,
   showBar: true,
 };
+interface SignInPayload {
+  login: string;
+  password: string;
+}
 
-export const authSignIn = createAsyncThunk(
+export const authSignIn = createAsyncThunk<string, SignInPayload, {rejectValue:string}>(
   "auth/signIn",
   async ({ login, password }, thunkAPI) => {
     try {
@@ -30,7 +41,7 @@ export const authSignIn = createAsyncThunk(
       return token;
     } catch (error) {
       console.error("Error occurred during sign-in:", error);
-      throw error;
+      return thunkAPI.rejectWithValue('Ошибка аутенфикации')
     }
   }
 );
@@ -45,16 +56,18 @@ const authSlices = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(authSignIn.pending, (state, action) => {
-        console.log(action);
+      .addCase(authSignIn.pending, (state) => {
+        state.loading = true;
+        state.error = null
       })
       .addCase(authSignIn.fulfilled, (state, action) => {
+        state.loading = false
         if (action.payload) {
-          state.token = action.payload.token;
+          state.token = action.payload;
         }
       })
-      .addCase(authSignIn.rejected, (state, action) => {
-        console.log(action);
+      .addCase(authSignIn.rejected, (state) => {
+        state.loading = false;
       });
   },
 });

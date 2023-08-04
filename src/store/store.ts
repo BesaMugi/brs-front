@@ -1,13 +1,16 @@
 import { configureStore } from "@reduxjs/toolkit";
-import lessons from "../reducer/lessonSlice";
-import groups from "../reducer/groupSlice";
 import application from "../reducer/authSlices";
+
+import lessons from "../reducer/lessonSlice"
+import groups from "../reducer/groupSlice"
+import userReducer from "../reducer/userSlice";
 
 export const store = configureStore({
   reducer: {
     application,
     lessons,
     groups,
+    users: userReducer,
   },
 });
 

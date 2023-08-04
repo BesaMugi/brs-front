@@ -1,23 +1,24 @@
-import { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./SignIn.module.scss";
 import { authSignIn } from "../../reducer/authSlices";
+import { AppDispatch, RootState } from "store/store";
 
 function SignIn() {
-  const [login, setLogin] = useState("");
-  const [password, setPassword] = useState("");
+  const [login, setLogin] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const navigate = useNavigate();
-  const error = useSelector((state) => {
+  const error = useSelector((state: RootState) => {
     return state.application.error;
   });
 
-  const token = useSelector((state) => {
+  const token = useSelector((state: RootState) => {
     return state.application.token;
   });
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
-  const handleSignIn = (e) => {
+  const handleSignIn = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(authSignIn({ login, password }));
     if (token) {
@@ -25,10 +26,10 @@ function SignIn() {
     }
   };
 
-  const hadleSetLogin = (e) => {
+  const hadleSetLogin = (e: ChangeEvent<HTMLInputElement>) => {
     setLogin(e.target.value);
   };
-  const handleSetPassword = (e) => {
+  const handleSetPassword = (e: ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
   };
   if (error) {

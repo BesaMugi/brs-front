@@ -5,9 +5,10 @@ import SignIn from './pages/SignIn/SignIn';
 import Lessons from './pages/Lessons/index';
 import Group from './pages/Group/index'
 import { useSelector } from 'react-redux';
+import { RootState } from 'store/store';
 
 function App() {
-  const token = useSelector((state) => state.application.token);
+  const token = useSelector((state: RootState) => state.application.token);
 
   return !token ? (
     <div className='wrapper'>
