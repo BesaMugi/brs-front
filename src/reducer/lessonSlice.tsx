@@ -117,7 +117,6 @@ const lessonSlice = createSlice({
         console.log(action.payload._id);
         state.lessons = state.lessons.map((item) => {
           console.log(item);
-          
           // if(item._id === action.payload._id){
           //   console.log('ccc');
           // }

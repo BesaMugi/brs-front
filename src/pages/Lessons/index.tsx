@@ -43,15 +43,14 @@ const Lessons: React.FC = () => {
   };
 
   const handleChangeLesson = (lessonId, newLessonName) => {
-    if(lessonName.trim === '') {
-      return true
+    if (lessonName.trim === "") {
+      return true;
     }
-    dispatch(changeLessons({lessonId, newLessonName}));
-    setNewLessonName('')
+    dispatch(changeLessons({ lessonId, newLessonName }));
+    setNewLessonName("");
   };
 
   console.log(changeLessonId);
-  
 
   useEffect(() => {
     dispatch(fetchLessons());
