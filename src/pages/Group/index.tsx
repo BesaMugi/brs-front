@@ -1,16 +1,16 @@
-import React from 'react'
-import Header from '../../components/Header/Header'
-import Group from '../Group/Group'
-import Footer from '../../components/Footer/Footer'
+import React from "react";
+import Header from "../../components/Header";
+import Group from "../Group/Group";
+import Footer from "../../components/Footer";
 
 const index = () => {
   return (
     <div>
-        <Header />
-        <Group />
-        <Footer />
+      <Header />
+      <Group />
+      <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default index
+export default index;
