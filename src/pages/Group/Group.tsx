@@ -159,7 +159,7 @@ const Group = () => {
                       open={true}
                       onOk={handleCloseModal}
                       onCancel={handleCloseModal}
-                      maskStyle={{ backgroundColor: " #00000025" }}
+                      maskStyle={{ backgroundColor: " #00000020" }}
                     >
                       <div>
                         {lessons.map((lesson) => {
