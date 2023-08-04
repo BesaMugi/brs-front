@@ -6,8 +6,8 @@ import {
   fetchLessons,
 } from "../../reducer/lessonSlice";
 import { useDispatch, useSelector } from "react-redux";
-import Footer from "../../components/Footer/Footer";
-import Header from "../../components/Header/Header";
+import Footer from "../../components/Footer";
+import Header from "../../components/Header";
 import styles from "./Lessons.module.scss";
 import { Button, Input, Modal } from "antd";
 import { CheckOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
