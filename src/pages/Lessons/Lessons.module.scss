@@ -1,28 +1,28 @@
-/* Lessons.module.scss */
 .content {
-    height: 500px;
-    display: flex;
-    flex-direction: column;
-  
+  min-height: 500px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
   
   .lessonItem {
     display: flex;
     justify-content: space-between;
-    margin-top: 20px;
     background-color: #f0f0f0;
     border-radius: 5px;
+    border: 1px solid green;
+    margin-bottom: 2px;
     padding: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
     cursor: pointer;
+
+    &:hover {
+      transform: translateY(-1px);
+    }
   }
-  
-  .lessonItem:hover {
-    transform: translateY(-5px);
-  }
-  
+
   .lessonTitle {
     font-size: 22px;
   }
 }
-    

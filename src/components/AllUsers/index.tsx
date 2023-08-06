@@ -1,10 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { userAll, deleteUser } from "../../reducer/userSlice";
+import { userAll, deleteUser, updateUser } from "../../reducer/userSlice";
 import { RootState, AppDispatch } from "store/store";
+import { UserData } from "../../reducer/userSlice";
+import EditUserModal from "./EditUserModal";
 
-interface User {
-  id: string;
+export interface User {
+  _id: string;
   login: string;
   firstName: string;
   lastName: string;
@@ -26,12 +28,21 @@ const AllUsers: React.FC = () => {
   const loading = useUserSelector((state) => state.users.loading);
   const error = useUserSelector((state) => state.users.error);
 
+  const [showModal, setShowModal] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<UserData | null>(null);
+
   useEffect(() => {
     dispatch(userAll());
   }, [dispatch]);
 
-  const handleDeleteUser = (userId: number) => {
+  const handleDeleteUser = (userId: string) => {
     dispatch(deleteUser(userId));
+  };
+
+  const handleUpdateUser = (user: UserData) => {
+    dispatch(updateUser(user)); 
+    setSelectedUser(user);
+    setShowModal(true);
   };
 
   if (loading) {
@@ -47,14 +58,20 @@ const AllUsers: React.FC = () => {
       <h2>Пользователи</h2>
       <ul>
         {users.map((user) => (
-          <li key={user.id}>
-            {user.firstName} {user.lastName} {user.surName}
+          <li key={user._id}>
+            {user.firstName} {user.lastName} {user.surName} {user.groups}
             {user.role === "user" && (
-              <button onClick={() => handleDeleteUser(user._id)}>X</button>
+              <>
+                <button onClick={() => handleDeleteUser(user._id)}>X</button>
+                <button onClick={() => handleUpdateUser(user)}>+</button>
+              </>
             )}
           </li>
         ))}
       </ul>
+      {showModal && selectedUser && (
+        <EditUserModal user={selectedUser} onClose={() => setShowModal(false)} />
+      )}
     </div>
   );
 };
