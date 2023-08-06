@@ -1,19 +1,27 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-type UserData = {
-  id: string;
+export type UserData = {
+  _id: string;
   login: string;
+  firstName: string;
   lastName: string;
   surName: string;
-  group: string;
+  role: string;
+  password: string;
+  groups: string;
+  lessons: string;
 };
 
-type AllUsersData = {
-  id: string;
+export type AllUsersData = {
+  _id: string;
   login: string;
+  firstName: string;
   lastName: string;
   surName: string;
-  group: string;
+  role: string;
+  password: string;
+  groups: string;
+  lessons: string;
 };
 
 export const userAll = createAsyncThunk<AllUsersData[], void>(
@@ -42,6 +50,25 @@ export const deleteUser = createAsyncThunk<string, string>(
     }
   }
 );
+
+export const updateUser = createAsyncThunk<UserData, UserData>(
+  "user/updateUser",
+  async (updatedUser: UserData) => {
+    try {
+      const res = await fetch(`http://localhost:3000/user/${updatedUser._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedUser),
+      });
+      const user = await res.json() 
+      return user
+    } catch (error: any) {
+      throw new Error(error.message || "Не удалось обновить данные пользователя");
+    }
+  }
+)
 
 interface UserState {
   users: UserData[];
@@ -85,7 +112,23 @@ const userSlice = createSlice({
       .addCase(deleteUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Не удалось удалить пользователя";
-      });
+      })
+      .addCase(updateUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        const updatedUser = action.payload;
+        const updatedUserIndex = state.users.findIndex(user => user._id === updatedUser._id);
+        if (updatedUserIndex !== -1) {
+          state.users[updatedUserIndex] = updatedUser;
+        }
+      })
+      .addCase(updateUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Не удалось обновить данные пользователя";
+      })
   },
 });
 

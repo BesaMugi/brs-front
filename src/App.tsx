@@ -21,8 +21,10 @@ function App() {
     </div>
   ) : (
     <Routes>
-      <Route path="/" element={<Navigate to="/home" />} />
+      <Route path="/" element={<SignIn />} />
       <Route path="/home" element={<Home />} />
+      <Route path="/lessons" element={<Lessons />} />
+      <Route path="/groups" element={<Group />} />
     </Routes>
   );
 }
