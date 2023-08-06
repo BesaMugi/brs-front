@@ -5,10 +5,6 @@ import groups from "../reducer/groupSlice"
 import users from "../reducer/userSlice"
 import userReducer from "../reducer/userSlice";
 
-import lessons from "../reducer/lessonSlice"
-import groups from "../reducer/groupSlice"
-import userReducer from "../reducer/userSlice";
-
 export const store = configureStore({
   reducer: {
     application,

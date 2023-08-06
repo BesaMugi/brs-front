@@ -14,7 +14,8 @@ import { Link } from "react-router-dom";
 import { Modal } from "antd";
 import { fetchLessons } from "../../reducer/lessonSlice";
 
-interface Group {
+
+export interface Group {
   _id: string;
   name: string;
   users: any[];

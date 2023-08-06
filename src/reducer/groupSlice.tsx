@@ -1,10 +1,13 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-interface User {
+export interface User {
   _id: string;
   firstName: string;
   lastName: string;
   surName: string;
+  groups: string;
+  lessons: string;
+  login: string;
 }
 
 interface Lesson {

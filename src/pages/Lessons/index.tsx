@@ -11,15 +11,16 @@ import Header from "../../components/Header";
 import styles from "./Lessons.module.scss";
 import { Button, Input, Modal } from "antd";
 import { CheckOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { AppDispatch, RootState } from "store/store";
 
 const Lessons: React.FC = () => {
-  const lessons = useSelector((state) => state.lessons.lessons);
+  const lessons = useSelector((state: RootState) => state.lessons.lessons);
   const [showModal, setShowModal] = useState(false);
   const [lessonName, setLessonName] = useState("");
-  const [changeLessonId, setChangeLesson] = useState(null);
+  const [changeLessonId, setChangeLesson] = useState<string | null>(null);
   const [newLessonName, setNewLessonName] = useState("");
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleOpenModal = () => {
     setShowModal(true);
@@ -38,7 +39,7 @@ const Lessons: React.FC = () => {
     setLessonName("");
   };
 
-  const handleDeleteLesson = (lessonId) => {
+  const handleDeleteLesson = (lessonId: string) => {
     dispatch(deleteLessons(lessonId));
   };
 
@@ -49,8 +50,6 @@ const Lessons: React.FC = () => {
     dispatch(changeLessons({ lessonId, newLessonName }));
     setNewLessonName("");
   };
-
-  console.log(changeLessonId);
 
   useEffect(() => {
     dispatch(fetchLessons());
