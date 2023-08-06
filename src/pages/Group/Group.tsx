@@ -9,7 +9,8 @@ import {
 import { AppDispatch, RootState } from "store/store";
 import styles from "./Group.module.scss";
 
-interface Group {
+
+export interface Group {
   _id: string;
   name: string;
   users: any[];
