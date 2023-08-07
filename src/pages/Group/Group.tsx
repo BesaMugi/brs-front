@@ -11,9 +11,10 @@ import {
 import { AppDispatch, RootState } from "store/store";
 import styles from "./Group.module.scss";
 import { Link } from "react-router-dom";
-import { Modal } from "antd";
 import { fetchLessons } from "../../reducer/lessonSlice";
-
+import { Button, Input, Modal } from "antd";
+import { CheckOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import SearchLessons from "./Search/SearchLessons";
 
 export interface Group {
   _id: string;
@@ -25,7 +26,6 @@ export interface Group {
 const Group = () => {
   const groups = useSelector((state: RootState) => state.groups.groups);
   const lessons = useSelector((state: RootState) => state.lessons.lessons);
-  console.log(lessons);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -33,6 +33,8 @@ const Group = () => {
   const [editingGroupId, setEditingGroupId] = useState<string | null>(null);
   const [editingGroupName, setEditingGroupName] = useState<string>("");
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [filteredLessons, setFilteredLessons] = useState(lessons);
+  const [searchValue, setSearchValue] = useState<string>("");
 
   const handleOpenModal = () => {
     setShowModal(true);
@@ -79,6 +81,17 @@ const Group = () => {
     dispatch(deleteGroups(groupId));
   };
 
+  const handleSearch = (searchValue: string) => {
+    setSearchValue(searchValue);
+  };
+
+  useEffect(() => {
+    const filteredLessons = lessons.filter((lesson) =>
+      lesson.title.toLowerCase().includes(searchValue.toLowerCase())
+    );
+    setFilteredLessons(filteredLessons);
+  }, [searchValue, lessons]);
+
   useEffect(() => {
     dispatch(fetchGroups());
     dispatch(fetchLessons());
@@ -109,23 +122,21 @@ const Group = () => {
               <div>
                 <div className={styles.edit_name}>
                   {isEditing ? (
-                    <div
+                    <Button
+                      icon={<CheckOutlined />}
                       className={styles.btn_check_mark}
                       onClick={() => handleEditGroup(item._id)}
-                    >
-                      ✓
-                    </div>
+                    />
                   ) : (
-                    <div
+                    <Button
+                      icon={<EditOutlined />}
                       className={styles.btn_redaction_mark}
                       onClick={() => handleStartEditing(item._id, item.name)}
-                    >
-                      ✏️
-                    </div>
+                    />
                   )}
                   <div className={styles.end_name}>
                     {isEditing ? (
-                      <input
+                      <Input
                         className={styles.edit_input}
                         type="text"
                         value={editingGroupName}
@@ -137,58 +148,58 @@ const Group = () => {
                       <span>{item.name}</span>
                     )}
                   </div>
-                  <span
+                  <Button
+                    icon={<DeleteOutlined />}
                     onClick={() => handleDeleteGroup(item._id)}
                     className={styles.delete_group}
-                  >
-                    X
-                  </span>
+                  />
                 </div>
                 <div className={styles.main_lesson_user}>
                   <div>
-                    <button>
+                    <Button className={styles.group_students}>
                       {" "}
                       <Link to={"/users"}>Студенты</Link>
-                    </button>
+                    </Button>
                   </div>
                   <div>
-                    <button onClick={handleOpenModal}>Предметы</button>
+                    <Button onClick={handleOpenModal}>Предметы</Button>
                   </div>
                   {showModal && (
                     <Modal
-                      title="Добавление предмета"
-                      open={true}
-                      onOk={handleCloseModal}
-                      onCancel={handleCloseModal}
-                      maskStyle={{ backgroundColor: " #00000020" }}
-                    >
-                      <div>
-                        {lessons.map((lesson) => {
-                          return (
-                            <div key={lesson._id}>
-                              {lesson.title}
-                              <button
-                                onClick={() =>
-                                  handleAddLessonToGroup(item._id, lesson._id)
-                                }
-                              >
-                                +
-                              </button>
-                              <button
-                                onClick={() =>
-                                  handleDeleteLessonFromGroup(
-                                    item._id,
-                                    lesson._id
-                                  )
-                                }
-                              >
-                                x
-                              </button>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </Modal>
+                    title="Добавление предмета"
+                    open={true}
+                    onOk={handleCloseModal}
+                    onCancel={handleCloseModal}
+                    maskStyle={{ backgroundColor: " #00000020" }}
+                  >
+                    <SearchLessons handleSearch={handleSearch} />
+                    <div>
+                      {filteredLessons.map((lesson) => {
+                        return (
+                          <div key={lesson._id}>
+                            {lesson.title}
+                            <button
+                              onClick={() =>
+                                handleAddLessonToGroup(item._id, lesson._id)
+                              }
+                            >
+                              +
+                            </button>
+                            <button
+                              onClick={() =>
+                                handleDeleteLessonFromGroup(
+                                  item._id,
+                                  lesson._id
+                                )
+                              }
+                            >
+                              x
+                            </button>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </Modal>
                   )}
                 </div>
               </div>

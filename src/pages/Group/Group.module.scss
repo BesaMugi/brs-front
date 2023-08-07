@@ -38,39 +38,26 @@ justify-content: space-around;
 }
 
 .card {
-  width: 200px;
-  background-color: #f1f1f1;
+  width: 300px;
   margin: 20px;
   padding: 10px;
+  background-color: #fcfafa;
   border-radius: 5px;
+  border: 1px solid green;
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-  .delete_group,
-  .btn_check_mark,
-  .btn_redaction_mark {
-    font-size: 18px;
-    cursor: pointer;
-
-    &:hover {
-      color: green;
-    }
-  }
-
-  .btn_check_mark {
-    margin-top: 5px;
-  }
 
   .delete_group {
-    color: red;
+    // color: red;
+    margin-bottom: 20px;
   }
 
   .edit_input {
     height: 20px;
-    width: 122px;
+    width: 150px;
     padding: 5px;
-    margin: 0 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
   }
@@ -78,6 +65,7 @@ justify-content: space-around;
   .edit_name{
     display: flex;
     justify-content: space-between;
+    margin-top: 10px;
   }
 
   .end_name{
@@ -87,5 +75,9 @@ justify-content: space-around;
   .main_lesson_user{
     display: flex;
     justify-content: space-between;
+      .group_students{
+        margin-right: 66px;
+      }
   }
+  
 }
