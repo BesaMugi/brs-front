@@ -5,10 +5,10 @@ function Header() {
   return (
     <header>
       <div className={styles.container}>
-        <a href="#" className={styles.  logo}><img src="/src/assets/favicon.png" alt="logo" /></a>
+        <Link to={'/home'} className={styles.logo}><img src="/src/assets/favicon.png" alt="logo" /></Link>
         <div className={styles.navbar}>
           <ul className={styles.navbar_menu}>
-            <li><Link to={'/'}>Главная</Link></li>
+            <li><Link to={'/home'}>Главная</Link></li>
             <li><Link to={'/lessons'}>Предметы</Link></li>
             <li><Link to={'/groups'}>Группы</Link></li>
             <li><a href="#">Образование</a></li>
