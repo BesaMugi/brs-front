@@ -1,5 +1,3 @@
-// Group.module.scss
-
 .input_group {
   display: flex;
   align-items: center;
@@ -18,21 +16,21 @@
   .btn_add_group {
     height: 30px;
     border: none;
-    background-color: #007bff;
+    background-color: #18644e;
     color: #fff;
     border-radius: 5px;
     cursor: pointer;
 
     &:hover {
-      background-color: #0056b3;
+      background-color: #259f7d;
     }
   }
 }
 
 .content {
   display: flex;
-flex-wrap: wrap;
-justify-content: space-around;
+  flex-wrap: wrap;
+  justify-content: space-around;
   align-items: center;
   padding: 50px;
 }
@@ -62,17 +60,17 @@ justify-content: space-around;
     border-radius: 5px;
   }
 
-  .edit_name{
+  .edit_name {
     display: flex;
     justify-content: space-between;
     margin-top: 10px;
   }
 
-  .end_name{
+  .end_name {
     margin: 7px;
   }
 
-  .main_lesson_user{
+  .main_lesson_user {
     display: flex;
     justify-content: space-between;
       .group_students{

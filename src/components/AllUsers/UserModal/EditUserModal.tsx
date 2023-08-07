@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { updateUser, UserData } from "../../reducer/userSlice";
+import { updateUser, UserData } from "../../../reducer/userSlice";
+import styles from "./EditUserModal.module.scss";
 
 interface EditUserModalProps {
   user: UserData;
@@ -31,24 +32,40 @@ const EditUserModal: React.FC<EditUserModalProps> = ({ user, onClose }) => {
   };
 
   return (
-    <div className="modal">
-      <div className="modal-content">
-        <h2>Edit User</h2>
+    <div className={styles.modal}>
+      <div className={styles.modal_content}>
+        <h2>Изменение данных пользователя</h2>
         <label>
-          First Name:
-          <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+          <span>Имя:</span>
+          <input
+            type="text"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+          />
         </label>
         <label>
-          Last Name:
-          <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+          <span>Фамилие:</span>
+          <input
+            type="text"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+          />
         </label>
         <label>
-          SurName:
-          <input type="text" value={surName} onChange={(e) => setSurName(e.target.value)} />
+          <span>Отчество:</span>
+          <input
+            type="text"
+            value={surName}
+            onChange={(e) => setSurName(e.target.value)}
+          />
         </label>
         <label>
-          Group:
-          <input type="text" value={groups} onChange={(e) => setGroups(e.target.value)} />
+          <span>Группа:</span>
+          <input
+            type="text"
+            value={groups}
+            onChange={(e) => setGroups(e.target.value)}
+          />
         </label>
         <button onClick={handleSave}>Сохранить</button>
         <button onClick={handleCancel}>Отменить</button>

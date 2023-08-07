@@ -1,0 +1,52 @@
+.usersTable {
+  margin-top: 30px;
+  border-collapse: collapse;
+  width: 100%;
+  padding: 5px;
+  
+  table {
+    width: 100%;
+  }
+
+  h2 {
+    text-align: center;
+    font-size: 42px;
+    color: #18644e;
+    margin-bottom: 50px;
+  }
+
+  th,
+  td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    transition: 0.4s ease, backface-visibility 1s;
+    backface-visibility: hidden;
+
+    &:hover {
+        transform: scale(1.02);
+    }
+  }
+
+  th {
+    padding: 5px 50px;
+    background-color: #18644e;
+    color: #ffffff;
+  }
+
+  td {
+    text-align: center;
+  }
+
+  button {
+    padding: 8px 16px;
+    background-color: #18644e;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  button + button {
+    margin-left: 5px;
+  }
+}

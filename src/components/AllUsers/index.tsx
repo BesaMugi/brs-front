@@ -3,7 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { userAll, deleteUser, updateUser } from "../../reducer/userSlice";
 import { RootState, AppDispatch } from "store/store";
 import { UserData } from "../../reducer/userSlice";
-import EditUserModal from "./EditUserModal";
+import EditUserModal from "./UserModal/EditUserModal";
+import styles from "./AllUsers.module.scss";
 
 export interface User {
   _id: string;
@@ -40,7 +41,7 @@ const AllUsers: React.FC = () => {
   };
 
   const handleUpdateUser = (user: UserData) => {
-    dispatch(updateUser(user)); 
+    dispatch(updateUser(user));
     setSelectedUser(user);
     setShowModal(true);
   };
@@ -54,26 +55,49 @@ const AllUsers: React.FC = () => {
   }
 
   return (
-    <div>
-      <h2>Пользователи</h2>
-      <ul>
-        {users.map((user) => (
-          <li key={user._id}>
-            {user.firstName} {user.lastName} {user.surName} {user.groups}
-            {user.role === "user" && (
-              <>
-                <button onClick={() => handleDeleteUser(user._id)}>X</button>
-                <button onClick={() => handleUpdateUser(user)}>+</button>
-              </>
-            )}
-          </li>
-        ))}
-      </ul>
+    <div className={styles.usersTable}>
+      <h2>Список студентов</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Имя</th>
+            <th>Фамилие</th>
+            <th>Отчество</th>
+            <th>Группа</th>
+            <th>Удалить</th>
+            <th>Обновить</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map((user) => (
+            <tr key={user._id}>
+              <td>{user.firstName}</td>
+              <td>{user.lastName}</td>
+              <td>{user.surName}</td>
+              <td>{user.groups}</td>
+              <td>
+                {user.role === "user" && (
+                  <button onClick={() => handleDeleteUser(user._id)}>X</button>
+                )}
+              </td>
+              <td>
+                {user.role === "user" && (
+                  <button onClick={() => handleUpdateUser(user)}>+</button>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
       {showModal && selectedUser && (
-        <EditUserModal user={selectedUser} onClose={() => setShowModal(false)} />
+        <EditUserModal
+          user={selectedUser}
+          onClose={() => setShowModal(false)}
+        />
       )}
     </div>
   );
 };
 
 export default AllUsers;
+
