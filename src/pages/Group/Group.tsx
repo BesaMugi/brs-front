@@ -30,18 +30,32 @@ const Group = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const [groupName, setGroupName] = useState<string>("");
+
   const [editingGroupId, setEditingGroupId] = useState<string | null>(null);
   const [editingGroupName, setEditingGroupName] = useState<string>("");
+  
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [filteredLessons, setFilteredLessons] = useState(lessons);
   const [searchValue, setSearchValue] = useState<string>("");
 
-  const handleOpenModal = () => {
-    setShowModal(true);
-  };
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
+  const [editedGroupLessons, setEditedGroupLessons] = useState<any[]>([]);
+    // Новое состояние для хранения предметов текущей редактируемой группы
+
+  const [currentGroupId, setCurrentGroupId] = useState<string | null>(null);
+    // Новое состояние для отслеживания ID текущей группы
+
+    const handleOpenModal = (groupId: string) => {
+      setCurrentGroupId(groupId); // Установить ID текущей группы
+      const group = groups.find((group) => group._id === groupId);
+      if (group) {
+        // setEditedGroupLessons(group.lessons); // Загрузить предметы текущей группы
+        setShowModal(true);
+      }
+    };
+  
+    const handleCloseModal = () => {
+      setCurrentGroupId(null); // Сбросить ID текущей группы при закрытии модального окна
+      setShowModal(false);
+    };
 
   const handleAddLessonToGroup = (groupId: string, lessonId: string) => {
     dispatch(addLessonInGroup({ groupId, lessonId }));
@@ -89,7 +103,7 @@ const Group = () => {
     const filteredLessons = lessons.filter((lesson) =>
       lesson.title.toLowerCase().includes(searchValue.toLowerCase())
     );
-    setFilteredLessons(filteredLessons);
+    setEditedGroupLessons(filteredLessons);
   }, [searchValue, lessons]);
 
   useEffect(() => {
@@ -117,6 +131,7 @@ const Group = () => {
       <div className={styles.content}>
         {groups.map((item) => {
           const isEditing = editingGroupId === item._id;
+
           return (
             <div className={styles.card} key={item._id}>
               <div>
@@ -162,44 +177,44 @@ const Group = () => {
                     </Button>
                   </div>
                   <div>
-                    <Button onClick={handleOpenModal}>Предметы</Button>
+                    <Button onClick={() => handleOpenModal(item._id)}>Предметы</Button>
                   </div>
-                  {showModal && (
+                  {showModal && currentGroupId === item._id && ( // Отображение модального окна только для текущей группы
                     <Modal
-                    title="Добавление предмета"
-                    open={true}
-                    onOk={handleCloseModal}
-                    onCancel={handleCloseModal}
-                    maskStyle={{ backgroundColor: " #00000020" }}
-                  >
-                    <SearchLessons handleSearch={handleSearch} />
-                    <div>
-                      {filteredLessons.map((lesson) => {
-                        return (
-                          <div key={lesson._id}>
-                            {lesson.title}
-                            <button
-                              onClick={() =>
-                                handleAddLessonToGroup(item._id, lesson._id)
-                              }
-                            >
-                              +
-                            </button>
-                            <button
-                              onClick={() =>
-                                handleDeleteLessonFromGroup(
-                                  item._id,
-                                  lesson._id
-                                )
-                              }
-                            >
-                              x
-                            </button>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </Modal>
+                      title="Добавление предмета"
+                      open={true}
+                      onOk={handleCloseModal}
+                      onCancel={handleCloseModal}
+                      maskStyle={{ backgroundColor: " #00000020" }}
+                    >
+                      <SearchLessons handleSearch={handleSearch} />
+                      <div>
+                        {editedGroupLessons.map((lesson) => {
+                          return (
+                            <div key={lesson._id}>
+                              {lesson.title}
+                              <button
+                                onClick={() =>
+                                  handleAddLessonToGroup(item._id, lesson._id)
+                                }
+                              >
+                                +
+                              </button>
+                              <button
+                                onClick={() =>
+                                  handleDeleteLessonFromGroup(
+                                    item._id,
+                                    lesson._id
+                                  )
+                                }
+                              >
+                                x
+                              </button>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </Modal>
                   )}
                 </div>
               </div>
