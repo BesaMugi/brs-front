@@ -4,21 +4,20 @@
   justify-content: center;
 
   input {
-    height: 30px;
-    padding: 5px;
+    padding: 7px 5px;
     margin: 10px;
-    margin-left: 130px;
     border: 1px solid #ccc;
     border-radius: 5px;
     width: 300px;
   }
 
   .btn_add_group {
+    padding: 8px 14px;
     height: 30px;
     border: none;
+    border-radius: 5px;
     background-color: #18644e;
     color: #fff;
-    border-radius: 5px;
     cursor: pointer;
 
     &:hover {
@@ -73,6 +72,7 @@
   .main_lesson_user {
     display: flex;
     justify-content: space-between;
+    
       .group_students{
         margin-right: 66px;
       }

@@ -65,7 +65,7 @@ const Lessons: React.FC = () => {
             <div key={item._id} className={styles.lessonItem}>
               {isEdit ? (
                 <Input
-                  style={{ width: 200 }}
+                  style={{ width: 100 }}
                   placeholder="Название урока"
                   value={newLessonName}
                   onChange={(e) => setNewLessonName(e.target.value)}
@@ -99,7 +99,7 @@ const Lessons: React.FC = () => {
             </div>
           );
         })}
-        <Button onClick={handleOpenModal}>Добавить урок</Button>
+        <Button className={styles.button_add} onClick={handleOpenModal}>Добавить урок</Button>
         {showModal && (
           <div>
             <Modal

@@ -182,7 +182,6 @@ useEffect(() => {
         <div className={styles.left}>
           <div className={styles.input_group}>
             <input
-              placeholder="Создать группу..."
               value={groupName}
               type="text"
               onChange={handleInputChange}
