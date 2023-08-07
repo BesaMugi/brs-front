@@ -114,13 +114,13 @@ const lessonSlice = createSlice({
       })
 
       .addCase(changeLessons.fulfilled, (state, action) => {
-        console.log(action.payload._id);
-        state.lessons = state.lessons.map((item) => {
+        //console.log(action.payload._id);
+        state.lessons.map((item) => {
           console.log(item);
-          // if(item._id === action.payload._id){
-          //   console.log('ccc');
-          // }
-        })
+          if (item._id === action.payload._id) {
+            item.title = action.payload.title
+          }
+        });
       });
   },
 });

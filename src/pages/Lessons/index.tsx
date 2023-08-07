@@ -44,8 +44,8 @@ const Lessons: React.FC = () => {
   };
 
   const handleChangeLesson = (lessonId, newLessonName) => {
-    if (lessonName.trim === "") {
-      return true;
+    if (newLessonName.trim() === "") {
+      return;
     }
     dispatch(changeLessons({ lessonId, newLessonName }));
     setNewLessonName("");
@@ -60,7 +60,7 @@ const Lessons: React.FC = () => {
       <Header />
       <div className={styles.content}>
         {lessons.map((item) => {
-          const isEdit = item._id === changeLessonId;
+          let isEdit = item._id === changeLessonId;
           return (
             <div key={item._id} className={styles.lessonItem}>
               {isEdit ? (
@@ -80,6 +80,7 @@ const Lessons: React.FC = () => {
                     icon={<CheckOutlined />}
                     onClick={() => {
                       handleChangeLesson(item._id, newLessonName);
+                      setChangeLesson(null);
                     }}
                   />
                 ) : (
