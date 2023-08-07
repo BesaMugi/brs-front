@@ -194,13 +194,13 @@ export const addLessonInGroup = createAsyncThunk<
 
 export const deleteLessonFromGroup = createAsyncThunk<
   //удаление предмета из группы
-  { groupId: string; lessonId: string },
+  { groupId: string; data: string},
   GroupId_UserId_LessonId,
   { rejectValue: unknown }
 >("deleteLesson/group", async ({ groupId, lessonId }, thunkAPI) => {
   try {
     const res = await fetch(
-      `http://localhost:3000/group/${groupId}/delete-user/${lessonId}`,
+      `http://localhost:3000/group/${groupId}/delete-lesson/${lessonId}`,
       {
         method: "DELETE",
         headers: {
@@ -214,7 +214,7 @@ export const deleteLessonFromGroup = createAsyncThunk<
       return thunkAPI.rejectWithValue(data.error);
     }
 
-    return { groupId, lessonId };
+    return { groupId, data };
   } catch (error) {
     return thunkAPI.rejectWithValue(error);
   }
@@ -238,6 +238,9 @@ const groupsSlice = createSlice({
           state.groups = state.groups.concat(action.payload);
         }
       )
+      .addCase(createGroups.rejected, (state, action) => {
+        state.error = action.payload;
+      })
       .addCase(deleteGroups.fulfilled, (state, action) => {
         state.groups = state.groups.filter(
           (group) => group._id !== action.payload
@@ -271,6 +274,9 @@ const groupsSlice = createSlice({
           return item;
         });
       })
+      .addCase(addUserInGroup.rejected, (state, action) => {
+        state.error = action.payload;
+      })
       .addCase(deleteUserFromGroup.fulfilled, (state, action) => {
         state.groups = state.groups.map((item) => {
           if (item._id === action.payload.groupId) {
@@ -281,23 +287,32 @@ const groupsSlice = createSlice({
           return item;
         });
       })
+      .addCase(deleteUserFromGroup.rejected, (state, action) => {
+        state.error = action.payload;
+      })
       .addCase(addLessonInGroup.fulfilled, (state, action) => {
         state.groups = state.groups.map((item) => {
           if(item._id === action.payload.groupId) {
-            item.users.push(action.payload.data);
+            item.lessons.push(action.payload.data);
           }
           return item;
         })
       })
+      .addCase(addLessonInGroup.rejected, (state, action) => {
+        state.error = action.payload;
+      })
       .addCase(deleteLessonFromGroup.fulfilled, (state, action) => {
         state.groups = state.groups.map((item) => {
           if(item._id === action.payload.groupId) {
-            item.users = item.users.filter(
-              (user) => user._id !== action.payload.lessonId
+            item.lessons = item.lessons.filter(
+              (lesson) => lesson._id !== action.payload.lessonId
             );
           }
           return item;
         })
+      })
+      .addCase(deleteLessonFromGroup.rejected, (state, action) => {
+        state.error = action.payload;
       })
   },
 });
