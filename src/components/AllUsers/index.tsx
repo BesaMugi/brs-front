@@ -5,6 +5,7 @@ import { RootState, AppDispatch } from "store/store";
 import { UserData } from "../../reducer/userSlice";
 import EditUserModal from "./UserModal/EditUserModal";
 import styles from "./AllUsers.module.scss";
+import { Group } from "../../reducer/groupSlice";
 
 export interface User {
   _id: string;
@@ -14,8 +15,8 @@ export interface User {
   surName: string;
   role: string;
   password: string;
-  groups: string;
-  lessons: string;
+  groups: string[];
+  lessons: string[];
 }
 
 const useUserSelector = (selector: (state: RootState) => any) =>
@@ -25,9 +26,14 @@ const useAppDispatch = () => useDispatch<AppDispatch>();
 
 const AllUsers: React.FC = () => {
   const dispatch = useAppDispatch();
-  const users = useUserSelector((state) => state.users.users) as User[];
-  const loading = useUserSelector((state) => state.users.loading);
-  const error = useUserSelector((state) => state.users.error);
+  const users = useUserSelector(
+    (state: RootState) => state.users.users
+  ) as User[];
+  const groups = useSelector(
+    (state: RootState) => state.groups.groups
+  ) as Group[];
+  const loading = useUserSelector((state: RootState) => state.users.loading);
+  const error = useUserSelector((state: RootState) => state.users.error);
 
   const [showModal, setShowModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState<UserData | null>(null);
@@ -74,7 +80,12 @@ const AllUsers: React.FC = () => {
               <td>{user.firstName}</td>
               <td>{user.lastName}</td>
               <td>{user.surName}</td>
-              <td>{user.groups}</td>
+              <td>
+                {user.groups.map((groupId) => {
+                  const group = groups.find((group) => group._id === groupId);
+                  return group ? group.name : "Неизвестная группа";
+                })}
+              </td>
               <td>
                 {user.role === "user" && (
                   <button onClick={() => handleDeleteUser(user._id)}>X</button>
@@ -100,4 +111,3 @@ const AllUsers: React.FC = () => {
 };
 
 export default AllUsers;
-
