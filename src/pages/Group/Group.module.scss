@@ -79,3 +79,42 @@
   }
   
 }
+
+/* Group.module.scss */
+
+.groupTable {
+  
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Две колонки равной ширины */
+  gap: 20px; /* Расстояние между колонками */
+
+  .table {
+    border-collapse: collapse;
+    width: 80%;
+    border: 1px solid #ccc;
+    margin: auto;
+
+    th,
+    td {
+      padding: 8px;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+
+    th {
+      background-color: #18644e;
+      color: white;
+    }
+
+    // tr:nth-child(even) {
+    //   background-color: #18644e;
+    //   color: white;
+    // }
+
+    tr:hover {
+      background-color: #e6e6e6;
+    }
+  }
+}
+
