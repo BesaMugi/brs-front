@@ -5,7 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "store/store";
 import { useEffect } from "react";
 import { userAll } from "../../reducer/userSlice";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { Button } from "antd";
 
 const GroupList = () => {
   const { id } = useParams();
@@ -21,6 +22,7 @@ const GroupList = () => {
   return (
     <>
       <Header />
+      <Button><Link to={"/groups"}>Назад</Link></Button>
       <div>
         <div className={styles.groupTable}>
           <table className={styles.table}>

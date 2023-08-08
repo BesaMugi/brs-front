@@ -1,6 +1,7 @@
 
 import React, { useEffect } from "react";
 import styles from "./Group.module.scss";
+import { Button } from "antd";
 
 interface LessonListProps {
   lessons: any[];
@@ -22,13 +23,13 @@ const LessonList: React.FC<LessonListProps> = ({
       {lessons.map((lesson) => (
         <div key={lesson._id}>
           {lesson.title}
-          <button
+          <Button
             onClick={() => handleAddLessonToGroup(currentGroupId, lesson._id)}
             disabled={isLessonAddedToGroup(currentGroupId, lesson._id)}
           >
             +
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={() => handleDeleteLessonFromGroup(currentGroupId, lesson._id)}
             className={
               isLessonAddedToGroup(currentGroupId, lesson._id)
@@ -37,7 +38,7 @@ const LessonList: React.FC<LessonListProps> = ({
             }
           >
             x
-          </button>
+          </Button>
         </div>
       ))}
     </div>
