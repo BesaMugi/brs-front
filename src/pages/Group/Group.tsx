@@ -21,6 +21,7 @@ import SearchStudents from "./Search/SearchStudents";
 import { userAll } from "../../reducer/userSlice";
 import LessonList from "./LessonList";
 import { Link } from "react-router-dom";
+import StudentList from "./StudentList";
 export interface Group {
   _id: string;
   name: string;
@@ -184,6 +185,13 @@ const Group = () => {
     }
     return false;
   };
+  const isStudentAddedToGroup = (groupId: string, userId: string): boolean => {
+    const group = groups.find((item) => item._id === groupId);
+    if (group) {
+      return group.users.some((user) => user._id === userId);
+    }
+    return false;
+  };
 
   // console.log(isLessonAddedToGroup);
 
@@ -292,19 +300,13 @@ return (
           maskStyle={{ backgroundColor: "#00000020" }}
         >
            <SearchStudents handleSearchUsers={handleSearchUsers} />
-          {currentGroupStudents.map((user) => (
-            <div key={user._id}>
-              {user.firstName} {user.lastName}
-              <Button onClick={() => handleAddUserToGroup(currentGroupId, user._id)}>
-                +
-              </Button>
-              <Button onClick={() => handleDeleteUserFromGroup(currentGroupId, user._id)}>
-                Х
-              </Button>
-              
-            </div>
-          ))}
-          
+           <StudentList
+            students={currentGroupStudents}
+            handleAddUserToGroup={handleAddUserToGroup}
+            handleDeleteUserFromGroup={handleDeleteUserFromGroup}
+            currentGroupId={currentGroupId}
+            isStudentAddedToGroup={isStudentAddedToGroup}
+          />
         </Modal>
       )}
     </>
