@@ -3,21 +3,24 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   User,
   addLessonInGroup,
+  addUserInGroup,
   createGroups,
   deleteGroups,
   deleteLessonFromGroup,
+  deleteUserFromGroup,
   fetchGroups,
   updateGroupsInStore,
 } from "../../reducer/groupSlice";
 import { AppDispatch, RootState } from "store/store";
 import styles from "./Group.module.scss";
-import { Link } from "react-router-dom";
 import { fetchLessons } from "../../reducer/lessonSlice";
 import { Button, Input, Modal } from "antd";
 import { CheckOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import SearchLessons from "./Search/SearchLessons";
+import SearchStudents from "./Search/SearchStudents";
+import { userAll } from "../../reducer/userSlice";
 import LessonList from "./LessonList";
-
+import { Link } from "react-router-dom";
 export interface Group {
   _id: string;
   name: string;
@@ -27,29 +30,40 @@ export interface Group {
 
 const Group = () => {
   const groups = useSelector((state: RootState) => state.groups.groups);
-  const lessons = useSelector((state: RootState) => state.lessons.lessons);
-
-  const dispatch = useDispatch<AppDispatch>();
-
-  const [groupName, setGroupName] = useState<string>("");
-
-  const [editingGroupId, setEditingGroupId] = useState<string | null>(null);
-  const [editingGroupName, setEditingGroupName] = useState<string>("");
+    const lessons = useSelector((state: RootState) => state.lessons.lessons);
+    const users = useSelector((state: RootState) => state.users.users)
+    console.log(users)
   
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const [searchValue, setSearchValue] = useState<string>("");
-
-  const [editedGroupLessons, setEditedGroupLessons] = useState<any[]>([]);
-    // Новое состояние для хранения предметов текущей редактируемой группы
-
-  const [currentGroupId, setCurrentGroupId] = useState<string | null>(null);
-    // Новое состояние для отслеживания ID текущей группы
-
+    const dispatch = useDispatch<AppDispatch>();
+  
+    const [groupName, setGroupName] = useState<string>("");
+  
+    //изменение названия группы
+    const [editingGroupId, setEditingGroupId] = useState<string | null>(null);
+    const [editingGroupName, setEditingGroupName] = useState<string>("");
+  
+    //Состояние модального окна и поиск (предметы)
+    const [showModal, setShowModal] = useState<boolean>(false);
+    const [searchValue, setSearchValue] = useState<string>("");
+  
+    // Состояние для модального окна (студенты)
+    const [showStudentModal, setShowStudentModal] = useState<boolean>(false); 
+    const [searchValueUsers, setSearchValueUsers] = useState<string>("");
+  
+    // Состояние для хранения студентов текущей группы
+    const [currentGroupStudents, setCurrentGroupStudents] = useState<any[]>([]); 
+  
+    //Состояние для хранения предметов текущей редактируемой группы
+    const [editedGroupLessons, setEditedGroupLessons] = useState<any[]>([]);
+  
+    //Состояние для отслеживания ID текущей группы
+    const [currentGroupId, setCurrentGroupId] = useState<string | null>(null);
+  
     const handleOpenModal = (groupId: string) => {
       setCurrentGroupId(groupId); // Установить ID текущей группы
       const group = groups.find((group) => group._id === groupId);
       if (group) {
-        // setEditedGroupLessons(group.lessons); // Загрузить предметы текущей группы
+        // setEditedGroupLessons(group.lessons); //предметы текущей группы
         setShowModal(true);
       }
     };
@@ -58,62 +72,111 @@ const Group = () => {
       setCurrentGroupId(null); // Сбросить ID текущей группы при закрытии модального окна
       setShowModal(false);
     };
-
-  const handleAddLessonToGroup = (groupId: string, lessonId: string) => {
-    dispatch(addLessonInGroup({ groupId, lessonId }));
-  };
-
-  const handleDeleteLessonFromGroup = (groupId: string, lessonId: string) => {
-    dispatch(deleteLessonFromGroup({ groupId, lessonId }));
-  };
-
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setGroupName(e.target.value);
-  };
-
-  const handleAddGroup = () => {
-    if (groupName.trim() === "") {
-      return;
-    }
-    dispatch(createGroups(groupName));
-    setGroupName("");
-  };
-
-  const handleEditGroup = (groupId: string) => {
-    if (editingGroupName.trim() !== "") {
-      dispatch(
-        updateGroupsInStore({ groupId, updatedGroupName: editingGroupName })
+  
+    const handleOpenStudentModal = (groupId: string) => {
+      setCurrentGroupId(groupId);
+      const group = groups.find((group) => group._id === groupId);
+      if (group) {
+        // setCurrentGroupStudents(group.users); //студенты текущей группы
+        setShowStudentModal(true);
+      }
+    };
+  
+    const handleCloseStudentModal = () => {
+      setCurrentGroupId(null);
+      setShowStudentModal(false);
+    };
+  
+    //добавление и удаление предмета в группу
+    const handleAddLessonToGroup = (groupId: string, lessonId: string) => {
+      dispatch(addLessonInGroup({ groupId, lessonId }));
+    };
+    const handleDeleteLessonFromGroup = (groupId: string, lessonId: string) => {
+      dispatch(deleteLessonFromGroup({ groupId, lessonId }));
+    };
+  
+    //добавление и удаление пользователя в группу
+    const handleAddUserToGroup = (groupId: string, userId: string) => {
+      dispatch(addUserInGroup({ groupId, userId }));
+    };
+    const handleDeleteUserFromGroup = (groupId: string, userId: string) => {
+      dispatch(deleteUserFromGroup({ groupId, userId }));
+    };
+    
+    //создание группы
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setGroupName(e.target.value);
+    };
+    const handleAddGroup = () => {
+      if (groupName.trim() === "") {
+        return;
+      }
+      dispatch(createGroups(groupName));
+      setGroupName("");
+    };
+  
+    //изменение группы
+    const handleEditGroup = (groupId: string) => {
+      if (editingGroupName.trim() !== "") {
+        dispatch(
+          updateGroupsInStore({ groupId, updatedGroupName: editingGroupName })
+        );
+      }
+      setEditingGroupId(null);
+    };
+    const handleStartEditing = (groupId: string, groupName: string) => {
+      setEditingGroupId(groupId);
+      setEditingGroupName(groupName);
+    };
+  
+    //удаление группы
+    const handleDeleteGroup = (groupId: string) => {
+      dispatch(deleteGroups(groupId));
+    };
+  
+    //поиск
+    const handleSearch = (searchValue: string) => {
+      setSearchValue(searchValue);
+    };
+    const handleSearchUsers = (searchValueUsers: string) => {
+      setSearchValueUsers(searchValueUsers);
+    };
+  
+    useEffect(() => {
+      //для поиска предметов
+      const filteredLessons = lessons.filter((lesson) =>
+        lesson.title.toLowerCase().includes(searchValue.toLowerCase())
       );
-    }
-    setEditingGroupId(null);
-  };
-
-  const handleStartEditing = (groupId: string, groupName: string) => {
-    setEditingGroupId(groupId);
-    setEditingGroupName(groupName);
-  };
-
-  const handleDeleteGroup = (groupId: string) => {
-    dispatch(deleteGroups(groupId));
-  };
-
-  const handleSearch = (searchValue: string) => {
-    setSearchValue(searchValue);
-  };
-
+      setEditedGroupLessons(filteredLessons);
+    }, [searchValue, lessons]);
+  
   useEffect(() => {
-    const filteredLessons = lessons.filter((lesson) =>
-      lesson.title.toLowerCase().includes(searchValue.toLowerCase())
+    //для поиска пользователей
+    const filteredUsers = users.filter((user) =>
+      user.firstName.toLowerCase().includes(searchValueUsers.toLowerCase())
     );
-    setEditedGroupLessons(filteredLessons);
-  }, [searchValue, lessons]);
-
+    setCurrentGroupStudents(filteredUsers);
+  }, [searchValueUsers, users]);
+  
   useEffect(() => {
-    dispatch(fetchGroups());
-    dispatch(fetchLessons());
-  }, []);
-
+    if (!showModal) {
+      // Сбросить значение поиска предметов при закрытии модального окна
+      setSearchValue("");
+    }
+  }, [showModal]);
+  
+  useEffect(() => {
+    if (!showStudentModal) {
+      // Сбросить значение поиска студентов при закрытии модального окна
+      setSearchValueUsers("");
+    }
+  }, [showStudentModal]);
+  
+  useEffect(() => {
+      dispatch(fetchGroups());
+      dispatch(fetchLessons());
+      dispatch(userAll())
+    }, []);
   const isLessonAddedToGroup = (groupId: string, lessonId: string) => {
     const group = groups.find((item) => item._id === groupId);
     if (group) {
@@ -173,7 +236,7 @@ return (
                         }}
                       />
                     ) : (
-                      <span>{item.name}</span>
+                      <Link to={`/group/${item._id}`}><span>{item.name}</span></Link>
                     )}
                   </div>
                   <Button
@@ -184,9 +247,11 @@ return (
                 </div>
                 <div className={styles.main_lesson_user}>
                   <div>
-                    <Button className={styles.group_students}>
-                      {" "}
-                      <Link to={"/users"}>Студенты</Link>
+                  <Button
+                      className={styles.group_students}
+                      onClick={() => handleOpenStudentModal(item._id)}
+                    >
+                      Студенты
                     </Button>
                   </div>
                   <div>
@@ -218,6 +283,30 @@ return (
           );
         })}
       </div>
+      {showStudentModal  && (
+        <Modal
+          title="Добавление студентов"
+          open={true}
+          onOk={handleCloseStudentModal}
+          onCancel={handleCloseStudentModal}
+          maskStyle={{ backgroundColor: "#00000020" }}
+        >
+           <SearchStudents handleSearchUsers={handleSearchUsers} />
+          {currentGroupStudents.map((user) => (
+            <div key={user._id}>
+              {user.firstName} {user.lastName}
+              <Button onClick={() => handleAddUserToGroup(currentGroupId, user._id)}>
+                +
+              </Button>
+              <Button onClick={() => handleDeleteUserFromGroup(currentGroupId, user._id)}>
+                Х
+              </Button>
+              
+            </div>
+          ))}
+          
+        </Modal>
+      )}
     </>
   );
 };
