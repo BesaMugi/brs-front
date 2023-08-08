@@ -1,13 +1,14 @@
 import Header from "../../components/Header";
-import Footer from "../../components/Footer";
 import AllUsers from "../../components/AllUsers";
+import SignUp from "../../pages/SignUp/signUp";
 
 function Home() {
   return (
     <>
       <Header />
+      <SignUp />
       <AllUsers />
-      <Footer />
+
     </>
   );
 }
