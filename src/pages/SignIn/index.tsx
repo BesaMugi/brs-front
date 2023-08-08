@@ -59,7 +59,7 @@ function SignIn() {
           </div>
           <div>
             <button className={styles.form_auth_button} type="submit">
-              <Link to={'/home'} >
+              <Link to={'/'} >
               Войти 
               </Link>
             </button>
