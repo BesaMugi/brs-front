@@ -10,6 +10,7 @@ export type UserData = {
   password: string;
   groups: string;
   lessons: string;
+  journalPresent: [];
 };
 
 export type AllUsersData = {

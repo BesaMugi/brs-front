@@ -1,71 +1,67 @@
-import styles from "./Journal.module.scss";
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
+    import styles from "./Journal.module.scss";
+    import Header from "../../components/Header";
+    import React, { useEffect } from "react";
+    import { useSelector, useDispatch } from "react-redux";
+    import { userAll } from "../../reducer/userSlice";
+    import { RootState, AppDispatch } from "store/store";
+    import { User } from "../../components/AllUsers";
 
-const Journal = () => {
-  return (
-    <>
-      <Header />
+    const useUserSelector = (selector: (state: RootState) => any) =>
+      useSelector<RootState, ReturnType<typeof selector>>(selector);
 
-      <div style={{ width: "70%", margin: "0 auto" }}>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>ФИО студентов</th>
-              <th>07.02.2023</th>
-              <th>07.02.2023</th>
-              <th>07.02.2023</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Хадисов АбдулБек</td>
-              <td>н</td>
-              <td> </td>
-              <td>н</td>
-            </tr>
-            <tr>
-              <td>Петров Петр</td>
-              <td>н</td>
-              <td>н</td>
-              <td> </td>
-            </tr>
-            <tr>
-              <td>Идигов Беслан</td>
-              <td>н</td>
-              <td>н</td>
-              <td> </td>
-            </tr>
-            <tr>
-              <td>Минтуев Магомед</td>
-              <td>н</td>
-              <td>н</td>
-              <td> </td>
-            </tr>
-            <tr>
-              <td>Павел Дуров</td>
-              <td> </td>
-              <td>н</td>
-              <td>н</td>
-            </tr>
-            <tr>
-              <td>Адам Исраилров</td>
-              <td>н</td>
-              <td> </td>
-              <td>н</td>
-            </tr>
-            <tr>
-              <td>Смирнов Сергей</td>
-              <td>н</td>
-              <td> </td>
-              <td>н</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <Footer />
-    </>
-  );
-};
+    const useAppDispatch = () => useDispatch<AppDispatch>();
 
-export default Journal;
+    const Journal: React.FC = () => {
+      const dispatch = useAppDispatch();
+      const users = useUserSelector(
+        (state: RootState) => state.users.users
+      ) as User[];
+      const loading = useUserSelector((state: RootState) => state.users.loading);
+      const error = useUserSelector((state: RootState) => state.users.error);
+
+      useEffect(() => {
+        dispatch(userAll());
+      }, [dispatch]);
+
+      if (loading) {
+        return <div>Загрузка...</div>;
+      }
+
+      if (error) {
+        return <div>Ошибка: {error}</div>;
+      }
+
+      return (
+        <>
+          <Header />
+          <div style={{ width: "70%", margin: "0 auto" }}>
+            <table className={styles.table}>
+              <thead>
+                <tr>
+                  <th>ФИО студентов</th>
+                  <td>
+                    {users[0]?.journalPresent.map(entry => entry.presents.map(item => <th key={item.date}>{item.date}</th> ))}
+                    </td>
+                </tr>
+              </thead>
+              <tbody>
+                {users.map((user) => (
+                  <tr key={user._id}>
+                    <td>
+                      {user.firstName} {user.lastName} {user.surName}
+                    </td>
+                    {user.journalPresent.map( entry => entry.presents.map(item =>
+                      <td key={entry.date}>
+                        {item.present ? "н" : ""}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      );
+    };
+
+    export default Journal;
