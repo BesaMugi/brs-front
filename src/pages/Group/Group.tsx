@@ -18,6 +18,7 @@ import { CheckOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import SearchLessons from "./Search/SearchLessons";
 import SearchStudents from "./Search/SearchStudents";
 import { userAll } from "../../reducer/userSlice";
+import { Link } from "react-router-dom";
 
 export interface Group {
   _id: string;
@@ -224,7 +225,7 @@ useEffect(() => {
                         }}
                       />
                     ) : (
-                      <span>{item.name}</span>
+                      <Link to={`/group/${item._id}`}> <span>{item.name}</span> </Link>
                     )}
                   </div>
                   <Button
