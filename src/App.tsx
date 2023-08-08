@@ -14,17 +14,16 @@ function App() {
 
   return !token ? (
     <Routes>
-      <Route path="/" element={<SignIn />} />
-      <Route path="/home" element={<Home />} />
-      <Route path="/lessons" element={<Lessons />} />
-      <Route path="/groups" element={<Group />} />
-      <Route path="/group/:id" element={<GroupList />} />
-
-    </Routes>
+       <Route path="/group/:id" element={<GroupList />} />
+       <Route path="/login" element={<SignIn />} />
+       <Route path="/users" element={<Home />} />
+       <Route path="/lessons" element={<Lessons />} />
+       <Route path="/groups" element={<Group />} />
+     </Routes>
   ) : (
     <Routes>
-      <Route path="/" element={<SignIn />} />
-      <Route path="/home" element={<Home />} />
+      <Route path="/login" element={<SignIn />} />
+      <Route path="/users" element={<Home />} />
       <Route path="/lessons" element={<Lessons />} />
       <Route path="/groups" element={<Group />} />
       <Route path="/brs" element={<Brs />} />

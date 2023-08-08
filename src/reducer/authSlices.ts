@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { act } from "react-dom/test-utils";
 interface AuthState {
-  error: string | null;
+  error:  null;
   loading: boolean | null;
   token: string | null;
   signIn: boolean;
@@ -45,6 +46,28 @@ export const authSignIn = createAsyncThunk<string, SignInPayload, {rejectValue:s
     }
   }
 );
+export const authSignUp = createAsyncThunk(
+  "auth/signUp",
+  async ({ login, password, firstName, lastName, surName }, thunkAPI) => {
+    try {
+      const res = await fetch("http://localhost:3000/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ login, password, firstName, lastName, surName }),
+      });
+      const json = await res.json();
+
+      if (json.error || json.error[0].msg) {
+        return thunkAPI.rejectWithValue(json.error);
+      }
+      return json;
+    } catch (error) {
+      thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 
 const authSlices = createSlice({
   name: "auth",
@@ -68,7 +91,20 @@ const authSlices = createSlice({
       })
       .addCase(authSignIn.rejected, (state) => {
         state.loading = false;
-      });
+      })
+      .addCase(authSignUp.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(authSignUp.fulfilled, (state) => {
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(authSignUp.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload ? action.payload : 'Ошибка при регистрации';
+      
+      })
   },
 });
 
