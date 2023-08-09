@@ -60,7 +60,7 @@ const Journal: React.FC = () => {
                   entry.presents
                     .filter((item) => new Date(item.date) >= sevenDaysAgo)
                     .map((item) => (
-                      <td key={entry.date}>{item.present ? "н" : ""}</td>
+                      <td key={entry.date}>{item.present ? "н" : "null"}</td>
                     ))
                 )}
               </tr>
