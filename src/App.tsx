@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "store/store";
 import GroupList from "./pages/Group/GroupList";
 import HomeMain from "./components/Main/HomeMain";
+import Journal from "./pages/JournalPresent";
 
 function App() {
   const token = useSelector((state: RootState) => state.application.token);
@@ -31,7 +32,7 @@ function App() {
       <Route path="/lessons" element={<Lessons />} />
       <Route path="/groups" element={<Group />} />
       <Route path="/group/:id" element={<GroupList />} />
-      <Route path="/brs" element={<Brs />} />
+      <Route path="/journal" element={<Journal />} />
     </Routes>
   );
 }

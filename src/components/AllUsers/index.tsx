@@ -19,6 +19,7 @@ export interface User {
   password: string;
   groups: string[];
   lessons: string[];
+  journalPresent: string[];
 }
 
 const useUserSelector = (selector: (state: RootState) => any) =>
