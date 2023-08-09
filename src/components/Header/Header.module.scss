@@ -1,51 +1,75 @@
 header {
-    width: 100%;
-    height: 120px;
-    color: #fff;
-    background-color: #18644e;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, .1);
+  width: 100%;
+  height: 120px;
+  color: #fff;
+  background-color: #18644e;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 
-    .container {
-        height: inherit;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+  .container {
+    height: inherit;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-        .logo {
-            width: 10%;
+    .logo {
+      width: 10%;
 
-            img {
-                width: 100%;
-            }
-        }
-
-        .navbar {
-            display: flex;
-            flex-flow: row nowrap;
-
-            .navbar_menu {
-                list-style-type: none;
-                padding-left: 0;
-                margin-bottom: 0;
-
-                li {
-                    display:  inline-block;
-                    margin-left: 20px;
-
-                    a {
-                        display:  inline-block;
-                        transition: 500ms ease-in-out;
-
-                        &:hover {
-                            color: #03d99d;
-                        }
-                    }
-                }
-            }
-        }
-
-        .exit{
-            margin-right: 25px;
-        }
+      img {
+        width: 100%;
+      }
     }
+
+    .navbar {
+      display: flex;
+      flex-flow: row nowrap;
+
+      .navbar_menu {
+        list-style-type: none;
+        padding-left: 0;
+        margin-bottom: 0;
+
+        li {
+          display: inline-block;
+          margin-left: 20px;
+
+          a {
+            display: inline-block;
+            transition: 500ms ease-in-out;
+
+            &:hover {
+              color: #03d99d;
+            }
+          }
+        }
+      }
+    }
+
+    .exit {
+      margin-right: 25px;
+    }
+  }
+
+  @media screen and (max-width: 570px) {
+    .container {
+      flex-direction: column;
+      align-items: center;
+      padding: 10px;
+
+      .navbar {
+        margin-top: 10px;
+        text-align: center;
+
+        .navbar_menu {
+          li {
+            margin-left: 7px;
+          }
+        }
+      }
+
+      .exit {
+        margin-top: 10px;
+        margin-right: 0;
+      }
+    }
+  }
 }

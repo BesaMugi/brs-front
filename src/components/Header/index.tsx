@@ -20,7 +20,6 @@ function Header() {
             <li><Link to={'/groups'}>Группы</Link></li>
             <li><Link to={'/users'}>Создать аккаунт</Link></li>
             <li><Link to={'/journal'}>Журнал</Link></li>
-            <li><a href="#">Контакты</a></li>
           </ul>
         </div>
 

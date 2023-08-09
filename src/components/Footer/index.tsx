@@ -5,7 +5,7 @@ function Footer() {
   return (
     <footer>
       <div className={styles.container}>
-        <img src="/src/assets/favicon.png" alt="" />
+        <img src="/src/assets/favicon.png" alt="logo" />
         <div className={styles.address}>
           <span>
             364024, Россия, Чеченская Республика, Грозный, пр. Эсамбаева, 21(8712)22-65-57
@@ -19,11 +19,11 @@ function Footer() {
             <YoutubeOutlined />
           </a>
         </div>
-      </div>
-      <div className={styles.copyright}>
+        <div className={styles.copyright}>
         <span>
           © Copyright 2021 РОССИЙСКИЙ ИСЛАМСКИЙ УНИВЕРСИТЕТ Им. КУНТА ХАДЖИ
         </span>
+      </div>
       </div>
     </footer>
   );
