@@ -6,6 +6,8 @@ import { UserData } from "../../reducer/userSlice";
 import EditUserModal from "./UserModal/EditUserModal";
 import styles from "./AllUsers.module.scss";
 import { Group } from "../../reducer/groupSlice";
+import { Button } from "antd";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
 export interface User {
   _id: string;
@@ -63,21 +65,27 @@ const AllUsers: React.FC = () => {
 
   return (
     <div className={styles.usersTable}>
-      <h2>Список студентов</h2>
+      <h1>Список студентов</h1>
       <table>
         <thead>
           <tr>
+            <th>Изменить</th>
             <th>Имя</th>
             <th>Фамилие</th>
             <th>Отчество</th>
             <th>Группа</th>
             <th>Удалить</th>
-            <th>Обновить</th>
           </tr>
         </thead>
         <tbody>
           {users.map((user) => (
             <tr key={user._id}>
+              <td>
+                {user.role === "user" && (
+                  <Button type="danger"
+                  icon={<EditOutlined />} onClick={() => handleUpdateUser(user)}></Button>
+                )}
+              </td>
               <td>{user.firstName}</td>
               <td>{user.lastName}</td>
               <td>{user.surName}</td>
@@ -89,12 +97,8 @@ const AllUsers: React.FC = () => {
               </td>
               <td>
                 {user.role === "user" && (
-                  <button onClick={() => handleDeleteUser(user._id)}>X</button>
-                )}
-              </td>
-              <td>
-                {user.role === "user" && (
-                  <button onClick={() => handleUpdateUser(user)}>+</button>
+                  <Button type="danger"
+                  icon={<DeleteOutlined />} onClick={() => handleDeleteUser(user._id)}></Button>
                 )}
               </td>
             </tr>

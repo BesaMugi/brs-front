@@ -194,7 +194,7 @@ export const addLessonInGroup = createAsyncThunk<
 
 export const deleteLessonFromGroup = createAsyncThunk<
   //удаление предмета из группы
-  { groupId: string; data: string},
+  { groupId: string; data: string, lessonId: string },
   GroupId_UserId_LessonId,
   { rejectValue: unknown }
 >("deleteLesson/group", async ({ groupId, lessonId }, thunkAPI) => {
@@ -214,11 +214,11 @@ export const deleteLessonFromGroup = createAsyncThunk<
       return thunkAPI.rejectWithValue(data.error);
     }
 
-    return { groupId, data };
+    return { groupId, data, lessonId };
   } catch (error) {
     return thunkAPI.rejectWithValue(error);
   }
-})
+});
 
 const groupsSlice = createSlice({
   name: "groups",
@@ -277,6 +277,9 @@ const groupsSlice = createSlice({
       .addCase(addUserInGroup.rejected, (state, action) => {
         state.error = action.payload;
       })
+      .addCase(deleteUserFromGroup.rejected, (state, action) => {
+        state.error = action.payload;
+      })
       .addCase(deleteUserFromGroup.fulfilled, (state, action) => {
         state.groups = state.groups.map((item) => {
           if (item._id === action.payload.groupId) {
@@ -287,7 +290,7 @@ const groupsSlice = createSlice({
           return item;
         });
       })
-      .addCase(deleteUserFromGroup.rejected, (state, action) => {
+      .addCase(addLessonInGroup.rejected, (state, action) => {
         state.error = action.payload;
       })
       .addCase(addLessonInGroup.fulfilled, (state, action) => {
@@ -296,22 +299,19 @@ const groupsSlice = createSlice({
             item.lessons.push(action.payload.data);
           }
           return item;
-        })
-      })
-      .addCase(addLessonInGroup.rejected, (state, action) => {
-        state.error = action.payload;
+        });
       })
       .addCase(deleteLessonFromGroup.fulfilled, (state, action) => {
-        state.groups = state.groups.map((item) => {
-          if(item._id === action.payload.groupId) {
-            item.lessons = item.lessons.filter(
-              (lesson) => lesson._id !== action.payload.lessonId
-            );
+        const groupId = action.payload.groupId;
+        const lessonId = action.payload.lessonId;
+        state.groups = state.groups.map((group) => {
+          if(group._id === groupId) {
+            group.lessons = group.lessons.filter((lesson) => lesson._id != lessonId)
           }
-          return item;
+          return group;
         })
       })
-      .addCase(deleteLessonFromGroup.rejected, (state, action) => {
+      .addCase(deleteLessonFromGroup.rejected, (state, action ) => {
         state.error = action.payload;
       })
   },

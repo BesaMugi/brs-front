@@ -13,7 +13,6 @@ const EditUserModal: React.FC<EditUserModalProps> = ({ user, onClose }) => {
   const [firstName, setFirstName] = useState(user.firstName);
   const [lastName, setLastName] = useState(user.lastName);
   const [surName, setSurName] = useState(user.surName);
-  const [groups, setGroups] = useState(user.groups);
 
   const handleSave = () => {
     const updatedUser: UserData = {
@@ -21,7 +20,6 @@ const EditUserModal: React.FC<EditUserModalProps> = ({ user, onClose }) => {
       firstName,
       lastName,
       surName,
-      groups,
     };
     dispatch(updateUser(updatedUser));
     onClose();
@@ -44,7 +42,7 @@ const EditUserModal: React.FC<EditUserModalProps> = ({ user, onClose }) => {
           />
         </label>
         <label>
-          <span>Фамилие:</span>
+          <span>Фамилия:</span>
           <input
             type="text"
             value={lastName}
@@ -59,14 +57,7 @@ const EditUserModal: React.FC<EditUserModalProps> = ({ user, onClose }) => {
             onChange={(e) => setSurName(e.target.value)}
           />
         </label>
-        <label>
-          <span>Группа:</span>
-          <input
-            type="text"
-            value={groups}
-            onChange={(e) => setGroups(e.target.value)}
-          />
-        </label>
+       
         <button onClick={handleSave}>Сохранить</button>
         <button onClick={handleCancel}>Отменить</button>
       </div>

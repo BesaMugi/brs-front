@@ -31,6 +31,10 @@ const Journal: React.FC = () => {
     return <div>Ошибка: {error}</div>;
   }
 
+  const today = new Date();
+  const sevenDaysAgo = new Date(today);
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
   return (
     <>
       <Header />
@@ -39,13 +43,11 @@ const Journal: React.FC = () => {
           <thead>
             <tr>
               <th>ФИО студентов</th>
-              <td>
-                {users[0]?.journalPresent.map(entry =>
-                  entry.presents.map(item => (
-                    <th key={item.date}>{item.date}</th>
-                  ))
-                )}
-              </td>
+              {users[0]?.journalPresent.map((entry) =>
+                entry.presents
+                  .filter((item) => new Date(item.date) >= sevenDaysAgo)
+                  .map((item) => <th key={item.date}>{item.date}</th>)
+              )}
             </tr>
           </thead>
           <tbody>
@@ -54,10 +56,12 @@ const Journal: React.FC = () => {
                 <td>
                   {user.firstName} {user.lastName} {user.surName}
                 </td>
-                {user.journalPresent.map(entry =>
-                  entry.presents.map(item => (
-                    <td key={entry.date}>{item.present ? "н" : ""}</td>
-                  ))
+                {user.journalPresent.map((entry) =>
+                  entry.presents
+                    .filter((item) => new Date(item.date) >= sevenDaysAgo)
+                    .map((item) => (
+                      <td key={entry.date}>{item.present ? "н" : ""}</td>
+                    ))
                 )}
               </tr>
             ))}

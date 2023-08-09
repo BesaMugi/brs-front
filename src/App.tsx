@@ -1,6 +1,6 @@
 import "./App.scss";
 import Home from "./pages/Home";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import SignIn from "./pages/SignIn";
 import Lessons from "./pages/Lessons/index";
 import Group from "./pages/Group/index";
@@ -16,12 +16,13 @@ function App() {
 
   return !token ? (
     <Routes>
-      <Route path="/" element={<HomeMain />} />
-      <Route path="/group/:id" element={<GroupList />} />
       <Route path="/login" element={<SignIn />} />
-      <Route path="/users" element={<Home />} />
-      <Route path="/lessons" element={<Lessons />} />
-      <Route path="/groups" element={<Group />} />
+      <Route path="/" element={<Navigate to="/login" />} />
+      <Route path="/group/:id" element={<Navigate to="/login" />} />
+      <Route path="/users" element={<Navigate to="/login" />} />
+      <Route path="/lessons" element={<Navigate to="/login" />} />
+      <Route path="/groups" element={<Navigate to="/login" />} />
+      <Route path="/brs" element={<Navigate to="/login" />} />
     </Routes>
   ) : (
     <Routes>
@@ -30,7 +31,6 @@ function App() {
       <Route path="/users" element={<Home />} />
       <Route path="/lessons" element={<Lessons />} />
       <Route path="/groups" element={<Group />} />
-      <Route path="/brs" element={<Brs />} />
       <Route path="/group/:id" element={<GroupList />} />
       <Route path="/journal" element={<Journal />} />
     </Routes>

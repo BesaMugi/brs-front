@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  User,
   addLessonInGroup,
   addUserInGroup,
   createGroups,
@@ -18,8 +19,8 @@ import { CheckOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import SearchLessons from "./Search/SearchLessons";
 import SearchStudents from "./Search/SearchStudents";
 import { userAll } from "../../reducer/userSlice";
+import LessonList from "./LessonList";
 import { Link } from "react-router-dom";
-
 export interface Group {
   _id: string;
   name: string;
@@ -29,160 +30,170 @@ export interface Group {
 
 const Group = () => {
   const groups = useSelector((state: RootState) => state.groups.groups);
-  const lessons = useSelector((state: RootState) => state.lessons.lessons);
-  const users = useSelector((state: RootState) => state.users.users)
-  console.log(users)
-
-  const dispatch = useDispatch<AppDispatch>();
-
-  const [groupName, setGroupName] = useState<string>("");
-
-  //изменение названия группы
-  const [editingGroupId, setEditingGroupId] = useState<string | null>(null);
-  const [editingGroupName, setEditingGroupName] = useState<string>("");
-
-  //Состояние модального окна и поиск (предметы)
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const [searchValue, setSearchValue] = useState<string>("");
-
-  // Состояние для модального окна (студенты)
-  const [showStudentModal, setShowStudentModal] = useState<boolean>(false); 
-  const [searchValueUsers, setSearchValueUsers] = useState<string>("");
-
-  // Состояние для хранения студентов текущей группы
-  const [currentGroupStudents, setCurrentGroupStudents] = useState<any[]>([]); 
-
-  //Состояние для хранения предметов текущей редактируемой группы
-  const [editedGroupLessons, setEditedGroupLessons] = useState<any[]>([]);
-
-  //Состояние для отслеживания ID текущей группы
-  const [currentGroupId, setCurrentGroupId] = useState<string | null>(null);
-
-  const handleOpenModal = (groupId: string) => {
-    setCurrentGroupId(groupId); // Установить ID текущей группы
-    const group = groups.find((group) => group._id === groupId);
-    if (group) {
-      // setEditedGroupLessons(group.lessons); //предметы текущей группы
-      setShowModal(true);
-    }
-  };
-
-  const handleCloseModal = () => {
-    setCurrentGroupId(null); // Сбросить ID текущей группы при закрытии модального окна
-    setShowModal(false);
-  };
-
-  const handleOpenStudentModal = (groupId: string) => {
-    setCurrentGroupId(groupId);
-    const group = groups.find((group) => group._id === groupId);
-    if (group) {
-      // setCurrentGroupStudents(group.users); //студенты текущей группы
-      setShowStudentModal(true);
-    }
-  };
-
-  const handleCloseStudentModal = () => {
-    setCurrentGroupId(null);
-    setShowStudentModal(false);
-  };
-
-  //добавление и удаление предмета в группу
-  const handleAddLessonToGroup = (groupId: string, lessonId: string) => {
-    dispatch(addLessonInGroup({ groupId, lessonId }));
-  };
-  const handleDeleteLessonFromGroup = (groupId: string, lessonId: string) => {
-    dispatch(deleteLessonFromGroup({ groupId, lessonId }));
-  };
-
-  //добавление и удаление пользователя в группу
-  const handleAddUserToGroup = (groupId: string, userId: string) => {
-    dispatch(addUserInGroup({ groupId, userId }));
-  };
-  const handleDeleteUserFromGroup = (groupId: string, userId: string) => {
-    dispatch(deleteUserFromGroup({ groupId, userId }));
-  };
+    const lessons = useSelector((state: RootState) => state.lessons.lessons);
+    const users = useSelector((state: RootState) => state.users.users)
+    console.log(users)
   
-  //создание группы
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setGroupName(e.target.value);
-  };
-  const handleAddGroup = () => {
-    if (groupName.trim() === "") {
-      return;
-    }
-    dispatch(createGroups(groupName));
-    setGroupName("");
-  };
-
-  //изменение группы
-  const handleEditGroup = (groupId: string) => {
-    if (editingGroupName.trim() !== "") {
-      dispatch(
-        updateGroupsInStore({ groupId, updatedGroupName: editingGroupName })
+    const dispatch = useDispatch<AppDispatch>();
+  
+    const [groupName, setGroupName] = useState<string>("");
+  
+    //изменение названия группы
+    const [editingGroupId, setEditingGroupId] = useState<string | null>(null);
+    const [editingGroupName, setEditingGroupName] = useState<string>("");
+  
+    //Состояние модального окна и поиск (предметы)
+    const [showModal, setShowModal] = useState<boolean>(false);
+    const [searchValue, setSearchValue] = useState<string>("");
+  
+    // Состояние для модального окна (студенты)
+    const [showStudentModal, setShowStudentModal] = useState<boolean>(false); 
+    const [searchValueUsers, setSearchValueUsers] = useState<string>("");
+  
+    // Состояние для хранения студентов текущей группы
+    const [currentGroupStudents, setCurrentGroupStudents] = useState<any[]>([]); 
+  
+    //Состояние для хранения предметов текущей редактируемой группы
+    const [editedGroupLessons, setEditedGroupLessons] = useState<any[]>([]);
+  
+    //Состояние для отслеживания ID текущей группы
+    const [currentGroupId, setCurrentGroupId] = useState<string | null>(null);
+  
+    const handleOpenModal = (groupId: string) => {
+      setCurrentGroupId(groupId); // Установить ID текущей группы
+      const group = groups.find((group) => group._id === groupId);
+      if (group) {
+        // setEditedGroupLessons(group.lessons); //предметы текущей группы
+        setShowModal(true);
+      }
+    };
+  
+    const handleCloseModal = () => {
+      setCurrentGroupId(null); // Сбросить ID текущей группы при закрытии модального окна
+      setShowModal(false);
+    };
+  
+    const handleOpenStudentModal = (groupId: string) => {
+      setCurrentGroupId(groupId);
+      const group = groups.find((group) => group._id === groupId);
+      if (group) {
+        // setCurrentGroupStudents(group.users); //студенты текущей группы
+        setShowStudentModal(true);
+      }
+    };
+  
+    const handleCloseStudentModal = () => {
+      setCurrentGroupId(null);
+      setShowStudentModal(false);
+    };
+  
+    //добавление и удаление предмета в группу
+    const handleAddLessonToGroup = (groupId: string, lessonId: string) => {
+      dispatch(addLessonInGroup({ groupId, lessonId }));
+    };
+    const handleDeleteLessonFromGroup = (groupId: string, lessonId: string) => {
+      dispatch(deleteLessonFromGroup({ groupId, lessonId }));
+    };
+  
+    //добавление и удаление пользователя в группу
+    const handleAddUserToGroup = (groupId: string, userId: string) => {
+      dispatch(addUserInGroup({ groupId, userId }));
+    };
+    const handleDeleteUserFromGroup = (groupId: string, userId: string) => {
+      dispatch(deleteUserFromGroup({ groupId, userId }));
+    };
+    
+    //создание группы
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setGroupName(e.target.value);
+    };
+    const handleAddGroup = () => {
+      if (groupName.trim() === "") {
+        return;
+      }
+      dispatch(createGroups(groupName));
+      setGroupName("");
+    };
+  
+    //изменение группы
+    const handleEditGroup = (groupId: string) => {
+      if (editingGroupName.trim() !== "") {
+        dispatch(
+          updateGroupsInStore({ groupId, updatedGroupName: editingGroupName })
+        );
+      }
+      setEditingGroupId(null);
+    };
+    const handleStartEditing = (groupId: string, groupName: string) => {
+      setEditingGroupId(groupId);
+      setEditingGroupName(groupName);
+    };
+  
+    //удаление группы
+    const handleDeleteGroup = (groupId: string) => {
+      dispatch(deleteGroups(groupId));
+    };
+  
+    //поиск
+    const handleSearch = (searchValue: string) => {
+      setSearchValue(searchValue);
+    };
+    const handleSearchUsers = (searchValueUsers: string) => {
+      setSearchValueUsers(searchValueUsers);
+    };
+  
+    useEffect(() => {
+      //для поиска предметов
+      const filteredLessons = lessons.filter((lesson) =>
+        lesson.title.toLowerCase().includes(searchValue.toLowerCase())
       );
-    }
-    setEditingGroupId(null);
-  };
-  const handleStartEditing = (groupId: string, groupName: string) => {
-    setEditingGroupId(groupId);
-    setEditingGroupName(groupName);
-  };
-
-  //удаление группы
-  const handleDeleteGroup = (groupId: string) => {
-    dispatch(deleteGroups(groupId));
-  };
-
-  //поиск
-  const handleSearch = (searchValue: string) => {
-    setSearchValue(searchValue);
-  };
-  const handleSearchUsers = (searchValueUsers: string) => {
-    setSearchValueUsers(searchValueUsers);
-  };
-
+      setEditedGroupLessons(filteredLessons);
+    }, [searchValue, lessons]);
+  
   useEffect(() => {
-    //для поиска предметов
-    const filteredLessons = lessons.filter((lesson) =>
-      lesson.title.toLowerCase().includes(searchValue.toLowerCase())
+    //для поиска пользователей
+    const filteredUsers = users.filter((user) =>
+      user.firstName.toLowerCase().includes(searchValueUsers.toLowerCase())
     );
-    setEditedGroupLessons(filteredLessons);
-  }, [searchValue, lessons]);
-
+    setCurrentGroupStudents(filteredUsers);
+  }, [searchValueUsers, users]);
+  
   useEffect(() => {
-  //для поиска пользователей
-  const filteredUsers = users.filter((user) =>
-    user.firstName.toLowerCase().includes(searchValueUsers.toLowerCase())
-  );
-  setCurrentGroupStudents(filteredUsers);
-}, [searchValueUsers, users]);
-
-useEffect(() => {
-  if (!showModal) {
-    // Сбросить значение поиска предметов при закрытии модального окна
-    setSearchValue("");
-  }
-}, [showModal]);
-
-useEffect(() => {
-  if (!showStudentModal) {
-    // Сбросить значение поиска студентов при закрытии модального окна
-    setSearchValueUsers("");
-  }
-}, [showStudentModal]);
-
+    if (!showModal) {
+      // Сбросить значение поиска предметов при закрытии модального окна
+      setSearchValue("");
+    }
+  }, [showModal]);
+  
   useEffect(() => {
-    dispatch(fetchGroups());
-    dispatch(fetchLessons());
-    dispatch(userAll())
-  }, []);
+    if (!showStudentModal) {
+      // Сбросить значение поиска студентов при закрытии модального окна
+      setSearchValueUsers("");
+    }
+  }, [showStudentModal]);
+  
+  useEffect(() => {
+      dispatch(fetchGroups());
+      dispatch(fetchLessons());
+      dispatch(userAll())
+    }, []);
+  const isLessonAddedToGroup = (groupId: string, lessonId: string) => {
+    const group = groups.find((item) => item._id === groupId);
+    if (group) {
+      return group.lessons.some((lesson) => lesson._id === lessonId);
+    }
+    return false;
+  };
 
-  return (
+  // console.log(isLessonAddedToGroup);
+
+return (
     <>
       <div className={styles.input_group}>
         <div className={styles.left}>
           <div className={styles.input_group}>
             <input
+              placeholder="Создать группу..."
               value={groupName}
               type="text"
               onChange={handleInputChange}
@@ -225,7 +236,7 @@ useEffect(() => {
                         }}
                       />
                     ) : (
-                      <Link to={`/group/${item._id}`}> <span>{item.name}</span> </Link>
+                      <Link to={`/group/${item._id}`}><span>{item.name}</span></Link>
                     )}
                   </div>
                   <Button
@@ -244,48 +255,28 @@ useEffect(() => {
                     </Button>
                   </div>
                   <div>
-                    <Button onClick={() => handleOpenModal(item._id)}>
-                      Предметы
-                    </Button>
+                    <Button onClick={() => handleOpenModal(item._id)}>Предметы</Button>
                   </div>
-                  {showModal &&
-                    currentGroupId === item._id && ( // Отображение модального окна только для текущей группы
-                      <Modal
-                        title="Добавление предмета"
-                        open={true}
-                        onOk={handleCloseModal}
-                        onCancel={handleCloseModal}
-                        maskStyle={{ backgroundColor: " #00000020" }}
-                      >
-                        <SearchLessons handleSearch={handleSearch} />
-                        <div>
-                          {editedGroupLessons.map((lesson) => {
-                            return (
-                              <div key={lesson._id}>
-                                {lesson.title}
-                                <Button
-                                  onClick={() =>
-                                    handleAddLessonToGroup(item._id, lesson._id)
-                                  }
-                                >
-                                  +
-                                </Button>
-                                <Button
-                                  onClick={() =>
-                                    handleDeleteLessonFromGroup(
-                                      item._id,
-                                      lesson._id
-                                    )
-                                  }
-                                >
-                                  Х
-                                </Button>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </Modal>
-                    )}
+                  {showModal && currentGroupId === item._id && ( // Отображение модального окна только для текущей группы
+                    <Modal
+                      title="Добавление предмета"
+                      open={true}
+                      onOk={handleCloseModal}
+                      onCancel={handleCloseModal}
+                      maskStyle={{ backgroundColor: " #00000020" }}
+                    >
+                      <SearchLessons handleSearch={handleSearch} />
+                      <div>
+                       <LessonList 
+                        lessons={editedGroupLessons}
+                        handleAddLessonToGroup={handleAddLessonToGroup}
+                        handleDeleteLessonFromGroup={handleDeleteLessonFromGroup}
+                        isLessonAddedToGroup={isLessonAddedToGroup}
+                        currentGroupId={currentGroupId}/>
+                        
+                      </div>
+                    </Modal>
+                  )}
                 </div>
               </div>
             </div>
