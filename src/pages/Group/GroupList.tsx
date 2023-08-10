@@ -6,7 +6,6 @@ import { useEffect } from "react";
 import { userAll } from "../../reducer/userSlice";
 import { Link, useParams } from "react-router-dom";
 import { Button } from "antd";
-import SubjectJournal from "../JournalPresent/SubjectJournal";
 
 const GroupList = () => {
   const { id } = useParams();
