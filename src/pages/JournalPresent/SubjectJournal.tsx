@@ -1,23 +1,25 @@
-import styles from "./Journal.module.scss";
-import Header from "../../components/Header";
 import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { userAll, updateUser } from "../../reducer/userSlice";
 import { RootState, AppDispatch } from "../../store/store";
-import { User } from "../../components/AllUsers";
+import styles from "./Journal.module.scss";
+import Header from "../../components/Header";
 
 const useUserSelector = (selector: (state: RootState) => any) =>
   useSelector<RootState, ReturnType<typeof selector>>(selector);
 
 const useAppDispatch = () => useDispatch<AppDispatch>();
 
-const Journal: React.FC = () => {
+const SubjectJournal: React.FC = () => {
   const dispatch = useAppDispatch();
   const users = useUserSelector(
     (state: RootState) => state.users.users
   ) as User[];
   const loading = useUserSelector((state: RootState) => state.users.loading);
   const error = useUserSelector((state: RootState) => state.users.error);
+
+  const { groupId, subjectId, lessonId } = useParams();
 
   useEffect(() => {
     dispatch(userAll());
@@ -30,10 +32,6 @@ const Journal: React.FC = () => {
   if (error) {
     return <div>Ошибка: {error}</div>;
   }
-
-  const today = new Date();
-  const sevenDaysAgo = new Date(today);
-  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
   const handlePresentToggle = (
     userId: string,
@@ -65,32 +63,32 @@ const Journal: React.FC = () => {
     dispatch(updateUser(updatedUsers));
   };
 
+  const filteredUsers = users.filter((user) => user.groups.includes(groupId));
+
   return (
     <>
-      <Header />
+    <Header />
       <div style={{ width: "70%", margin: "0 auto" }}>
         <table className={styles.table}>
           <thead>
             <tr>
               <th>ФИО студентов</th>
-              {users[0]?.journalPresent.map((entry) =>
+              {filteredUsers[0]?.journalPresent.map((entry) =>
                 entry.presents
-                  .filter((item) => new Date(item.date) >= sevenDaysAgo)
                   .map((item) => (
                     <th key={item.date}>{item.date.substring(0, 10)}</th>
                   ))
-              )}
+              )}    
             </tr>
           </thead>
           <tbody>
-            {users.map((user) => (
+            {filteredUsers.map((user) => (
               <tr key={user._id}>
                 <td>
                   {user.firstName} {user.lastName} {user.surName}
                 </td>
                 {user.journalPresent.map((entry) =>
                   entry.presents
-                    .filter((item) => new Date(item.date) >= sevenDaysAgo)
                     .map((item) => (
                       <td
                         key={user._id}
@@ -112,4 +110,4 @@ const Journal: React.FC = () => {
   );
 };
 
-export default Journal;
+export default SubjectJournal;

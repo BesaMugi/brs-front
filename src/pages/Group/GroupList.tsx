@@ -1,12 +1,12 @@
 import styles from "./Group.module.scss";
 import Header from "../../components/Header";
-import Footer from "../../components/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "store/store";
 import { useEffect } from "react";
 import { userAll } from "../../reducer/userSlice";
 import { Link, useParams } from "react-router-dom";
 import { Button } from "antd";
+import SubjectJournal from "../JournalPresent/SubjectJournal";
 
 const GroupList = () => {
   const { id } = useParams();
@@ -22,7 +22,9 @@ const GroupList = () => {
   return (
     <>
       <Header />
-      <Button><Link to={"/groups"}>Назад</Link></Button>
+      <Button>
+        <Link to={"/groups"}>Назад</Link>
+      </Button>
       <div>
         <div className={styles.groupTable}>
           <table className={styles.table}>
@@ -56,6 +58,13 @@ const GroupList = () => {
                 <tr key={lesson._id}>
                   <td>{index + 1}</td>
                   <td>{lesson.title}</td>
+                  <td>
+                    <button>
+                      <Link to={`/groups/${group._id}/subjects/${lesson._id}`}>
+                        Журнал
+                      </Link>   
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
