@@ -73,6 +73,17 @@ export const updateUser = createAsyncThunk<UserData, UserData>(
   }
 )
 
+export const togglePresent = createAsyncThunk(
+  "user/togglePresent",
+  async ({ userId, entryDate, presentDate }: TogglePresentData) => {
+    try {
+      return { userId, entryDate, presentDate };
+    } catch (error: any) {
+      throw new Error(error.message || "Не удалось изменить значение present");
+    }
+  }
+);
+
 interface UserState {
   users: UserData[];
   loading: boolean;
@@ -131,6 +142,23 @@ const userSlice = createSlice({
       .addCase(updateUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Не удалось обновить данные пользователя";
+      })
+      .addCase(togglePresent.fulfilled, (state, action) => {
+        const { userId, entryDate, presentDate } = action.payload;
+        const userToUpdate = state.users.find((user) => user._id === userId);
+        if ( userToUpdate) {
+          const entryToUpdate = userToUpdate.journalPresent.find(
+            (entry) => entry.date === entryDate
+          );
+          if (entryToUpdate) {
+            const presentToUpdate = entryToUpdate.presents.find(
+              (pres) => pres.date === presentDate
+            );
+            if (presentToUpdate) {
+              presentToUpdate.present = !presentToUpdate.present
+            }
+          }
+        }
       })
   },
 });
