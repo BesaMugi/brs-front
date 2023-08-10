@@ -18,7 +18,6 @@ footer {
 
     img {
       width: 10%;
-      margin-bottom: 10px; 
     }
 
     .contacts {
@@ -29,42 +28,12 @@ footer {
         font-size: 26px;
       }
     }
-
-    .copyright {
-      background-color: #18644e;
-      text-align: center;
-      padding: 10px;
-      width: 100%;
-    }
   }
 
-  @media screen and (max-width: 768px) {
-    .container {
-      flex-direction: column;
-      align-items: center;
-      font-size: 12px;
-
-      img {
-        width: 10%;
-      }
-
-      .contacts {
-        margin-top: 5px;
-        padding: 0;
-
-        a {
-          font-size: 18px;
-        }
-      }
-
-      span {
-        display: inline-block;
-        padding: 0 20px;
-      }
-
-      .copyright {
-        font-size: 8px;
-      }
-    }
+  .copyright {
+    background-color: #18644e;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
   }
 }
