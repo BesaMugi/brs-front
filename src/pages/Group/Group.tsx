@@ -221,12 +221,14 @@ return (
                 <div className={styles.edit_name}>
                   {isEditing ? (
                     <Button
+                    type="danger"
                       icon={<CheckOutlined />}
                       className={styles.btn_check_mark}
                       onClick={() => handleEditGroup(item._id)}
                     />
                   ) : (
                     <Button
+                    type="danger"
                       icon={<EditOutlined />}
                       className={styles.btn_redaction_mark}
                       onClick={() => handleStartEditing(item._id, item.name)}
@@ -255,6 +257,7 @@ return (
                 <div className={styles.main_lesson_user}>
                   <div>
                   <Button
+                  type="danger"
                       className={styles.group_students}
                       onClick={() => handleOpenStudentModal(item._id)}
                     >
@@ -262,7 +265,7 @@ return (
                     </Button>
                   </div>
                   <div>
-                    <Button onClick={() => handleOpenModal(item._id)}>Предметы</Button>
+                    <Button type="danger" onClick={() => handleOpenModal(item._id)}>Предметы</Button>
                   </div>
                   {showModal && currentGroupId === item._id && ( // Отображение модального окна только для текущей группы
                     <Modal

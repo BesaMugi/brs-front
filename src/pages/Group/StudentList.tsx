@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "antd";
+import styles from './Group.module.scss'
 
 interface Student {
   _id: string;
@@ -28,19 +29,22 @@ const StudentList: React.FC<StudentListProps> = ({
   return (
     <>
       {students.map((user) => (
-        <div key={user._id}>
+        <div key={user._id} className={styles.student_btn}>
           {user.firstName} {user.lastName}
+          <div>
+
           <Button
             onClick={() => handleAddUserToGroup(currentGroupId, user._id)}
-				disabled={isStudentAddedToGroup(currentGroupId, user._id)}
+            disabled={isStudentAddedToGroup(currentGroupId, user._id)}
 				>
             +
           </Button>
           <Button
             onClick={() => handleDeleteUserFromGroup(currentGroupId, user._id)}
-				>
+            >
             Х
           </Button>
+          </div>
         </div>
       ))}
     </>

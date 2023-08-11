@@ -1,9 +1,12 @@
 .content {
+  width: 600px;
   min-height: 500px;
   padding: 10px;
   display: flex;
   flex-direction: column;
+  margin: auto;
   
+
   .lessonItem {
     display: flex;
     justify-content: space-between;
@@ -26,6 +29,20 @@
         background-color: #fff;
       }
     }
+  }
+
+  .button_add{
+    margin-bottom: 10px;
+    background-color: #18644e;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;  
+      
+      &:hover {
+        border: 1px solid #18644e;
+        background-color: white;
+        color: black;
+      }
   }
 
   .lessonTitle {

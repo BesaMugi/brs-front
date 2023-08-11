@@ -59,6 +59,24 @@ const Lessons: React.FC = () => {
     <main>
       <Header />
       <div className={styles.content}>
+        <Button type="danger" className={styles.button_add} onClick={handleOpenModal}>Добавить урок</Button>
+        {showModal && (
+          <div>
+            <Modal
+              title="Добавление урока"
+              open={true}
+              onOk={handleAddLesson}
+              onCancel={handleCloseModal}
+            >
+              <Input
+                placeholder="Название урока"
+                value={lessonName}
+                onChange={(e) => setLessonName(e.target.value)}
+              />
+            </Modal>
+          </div>
+        )}
+
         {lessons.map((item) => {
           let isEdit = item._id === changeLessonId;
           return (
@@ -99,23 +117,6 @@ const Lessons: React.FC = () => {
             </div>
           );
         })}
-        <Button className={styles.button_add} onClick={handleOpenModal}>Добавить урок</Button>
-        {showModal && (
-          <div>
-            <Modal
-              title="Добавление урока"
-              open={true}
-              onOk={handleAddLesson}
-              onCancel={handleCloseModal}
-            >
-              <Input
-                placeholder="Название урока"
-                value={lessonName}
-                onChange={(e) => setLessonName(e.target.value)}
-              />
-            </Modal>
-          </div>
-        )}
       </div>
       <Footer />
     </main>

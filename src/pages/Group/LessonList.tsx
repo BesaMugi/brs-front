@@ -21,8 +21,9 @@ const LessonList: React.FC<LessonListProps> = ({
   return (
     <div>
       {lessons.map((lesson) => (
-        <div key={lesson._id}>
+        <div key={lesson._id} className={styles.lesson_btn}>
           {lesson.title}
+          <div>
           <Button
             onClick={() => handleAddLessonToGroup(currentGroupId, lesson._id)}
             disabled={isLessonAddedToGroup(currentGroupId, lesson._id)}
@@ -39,6 +40,7 @@ const LessonList: React.FC<LessonListProps> = ({
           >
             x
           </Button>
+          </div>
         </div>
       ))}
     </div>

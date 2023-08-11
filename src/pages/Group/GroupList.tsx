@@ -21,9 +21,9 @@ const GroupList = () => {
   return (
     <>
       <Header />
-      <Button>
+      <button className={styles.btn_back}>
         <Link to={"/groups"}>Назад</Link>
-      </Button>
+      </button>
       <div>
         <div className={styles.groupTable}>
           <table className={styles.table}>
@@ -50,6 +50,7 @@ const GroupList = () => {
               <tr>
                 <th>№</th>
                 <th>Название предметов</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
